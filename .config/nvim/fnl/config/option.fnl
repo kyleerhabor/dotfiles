@@ -16,6 +16,7 @@
 ;;; NOTE: I tried a cmdheight of 0, which kind of worked, but sometimes flashed with lualine and created more prompts (hit / enter).
 
 (set opt.showcmd false) ; I don't see this ever being useful.
+(set opt.showmode false)
 
 ;;; Search
 
@@ -28,23 +29,21 @@
 ;;; NOTE: I don't understand what 'shiftround' does.
 
 (set opt.expandtab true)
+(set opt.guifont "SF Mono Powerline:h14")
 (set opt.shiftwidth 2)
 (set opt.wrap false)
 
 ;;; Window / Buffer
 
+(set opt.cursorline true)
 (set opt.listchars "trail:.,extends:→")
 (set opt.number true)
 (set opt.numberwidth 5)
 (set opt.relativenumber true)
 (set opt.scrolloff 1)
-(set opt.signcolumn "no") ; They're really just not useful. Virtual inline text keeps up the tradition of overlay.
+(set opt.signcolumn "no") ; They're really just not useful. Virtual text keeps up the tradition of overlay.
 (set opt.splitright true)
-
-(when vim.g.neovide
-  ;; In Neovide, it's easy for me to tell which line I'm on with just the line number column highlighted. On other
-  ;; clients (like Neovim for Mac; https://github.com/JaySandhu/neovim-mac), it's not so easy.
-  (set opt.cursorlineopt "number"))
+(set opt.undofile true)
 
 ;; This enables list mode when in normal mode (since it's annoying to get the trailing indicators in insert mode, and
 ;; likely won't be useful for other modes, like visual block)
