@@ -127,13 +127,13 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+export ZSHC="$HOME/.zsh"
+
+source $ZSHC/aliases.zsh
+
 # Syntax highlighting
 
 zstyle ':bracketed-paste-magic' active-widgets '.self-*' # Makes pasting not super slow.
-
-# Extras
-
-alias dotfiles="$(command -v git) --git-dir=$HOME/.dotfiles/.git --work-tree=$HOME"
 
 # This has to be at the bottom, which is annoying.
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
