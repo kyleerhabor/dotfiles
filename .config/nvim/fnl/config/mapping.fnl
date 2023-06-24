@@ -1,8 +1,8 @@
 (module config.mapping
   {autoload {nvim aniseed.nvim}})
 
-(nvim.set_keymap "n" "<Space>" "<NOP>" {"noremap" true
-                                        "silent" true})
+; (nvim.set_keymap "n" "<Space>" "<NOP>" {"noremap" true
+;                                         "silent" true})
 
 (set nvim.g.mapleader " ")
 (set nvim.g.maplocalleader ",")
