@@ -35,8 +35,7 @@
 ;;; Window / Buffer
 
 (set opt.cursorline true)
-(set opt.listchars "trail:.,extends:→") ; For some reason, the map form doesn't work.
-
+(set opt.listchars "trail:.,extends:→") ; For some reason, the paired table form doesn't work.
 (set opt.number true)
 (set opt.numberwidth 5)
 (set opt.relativenumber true)
@@ -44,5 +43,3 @@
 (set opt.signcolumn "no") ; This is really just not useful. Virtual text keeps up the tradition of overlay!
 (set opt.splitright true)
 (set opt.undofile true)
-
-

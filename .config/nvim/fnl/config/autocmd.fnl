@@ -3,6 +3,7 @@
 
 (def opt vim.opt)
 
+;; By default, Commentary uses one colon. I prefer two.
 (augroup "CommentaryLisp"
   [["FileType"] {"pattern" "clojure,fennel" ; Maybe just include every known lisp?
                  "callback" #(set opt.commentstring ";; %s")}])
