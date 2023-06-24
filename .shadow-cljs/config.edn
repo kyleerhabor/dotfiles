@@ -1,0 +1,2 @@
+{:dependencies [[cider/cider-nrepl "0.30.0"]
+                [binaryage/devtools "1.0.6"]]}
