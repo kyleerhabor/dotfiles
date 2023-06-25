@@ -36,4 +36,7 @@
                     (opt.modifiable:get)))))
 
 (augroup "HighlightYank"
-  [["TextYankPost"] {"callback" #(vim.highlight.on_yank {"timeout" c.highlight-duration})}])
+  [["TextYankPost"] {"callback" #(vim.highlight.on_yank {"timeout" c.highlight-duration
+                                                         ;; We can already see the selection, so there's no real benefit
+                                                         ;; to this.
+                                                         "on_visual" false})}])

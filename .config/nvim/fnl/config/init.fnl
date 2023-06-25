@@ -1,9 +1,15 @@
 (module config.init
-  {require [config.core
+  {autoload {a aniseed.core}
+   require [config.core
             config.option
             config.autocmd
-            config.keymap
-            config.plugin
-            ;; Interestingly, having this loaded before plugins causes the background to not be loaded. I'm using
-            ;; Neovide, so it doesn't really matter; but it is *kind of* annoying for environments like iTerm.
-            config.colorscheme]})
+            config.keymap]})
+
+(def mods
+  ;; Interestingly, when the plugins are loaded before the colorscheme, the background color is not used. For Neovide,
+  ;; it doesn't matter (since there's no background), but for others (iTerm, git commit in a terminal, etc.), it does.
+  (if vim.g.neovide
+    [:config.plugin :config.colorscheme]
+    [:config.colorscheme :config.plugin]))
+
+(a.run! require mods)
