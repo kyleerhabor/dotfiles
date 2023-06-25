@@ -7,6 +7,7 @@ eval "$(pyenv init -)"
 export NVM_DIR="$HOME/.nvm"
 
 # Neovide
+
 if [ $__CFBundleIdentifier = "com.neovide.neovide" ]; then
   # Node needs to be loaded before Neovim starts (else it won't recognize it).
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

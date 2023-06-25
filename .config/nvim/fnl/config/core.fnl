@@ -1,6 +1,8 @@
 (module config.core
   {autoload {nvim aniseed.nvim}})
 
+(def highlight-duration 500)
+
 ;;;; This module is for anything "central" to the application running Neovim (e.g. Neovide configuration).
 
 (def neovide? vim.g.neovide)
