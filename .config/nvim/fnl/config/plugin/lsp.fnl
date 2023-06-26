@@ -6,4 +6,6 @@
                                       "diagnostics" {"globals" ["vim"]}
                                       "workspace" {"library" (nvim.get_runtime_file "" false)}
                                       "telementry" {"enable" false}}}})
+
 (lsp.clojure_lsp.setup {})
+(lsp.sourcekit.setup {"root_dir" #(vim.fn.getcwd)})

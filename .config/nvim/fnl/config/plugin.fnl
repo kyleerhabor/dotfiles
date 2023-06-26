@@ -66,7 +66,7 @@
               "tpope/vim-vinegar" {}
               "folke/which-key.nvim" {"mod" (relative "which-key")} ; For some reason, I need to click "g" before localleader (,) works.
               "nvim-lualine/lualine.nvim" {"requires" [;; For some reason, lualine does not load this.
-                                                       (prefix "kyazdani42/nvim-web-devicons" {"opt" false})]
+                                                       (prefix "kyazdani42/nvim-web-devicons" {"opt" true})]
                                            "mod" (relative "lualine")}})
 
 (load plugins)

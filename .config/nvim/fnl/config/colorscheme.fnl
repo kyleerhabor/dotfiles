@@ -10,5 +10,4 @@
     "bold" true
     "italic" false))
 
-;; TODO: Find an alternative theme 
 (vim.cmd "colorscheme gruvbox-material")
