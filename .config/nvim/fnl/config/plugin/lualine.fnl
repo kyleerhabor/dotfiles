@@ -3,7 +3,8 @@
    require {{: prefix} config.util}})
 
 (lualine.setup {"options" {"theme" "gruvbox-material"
-                           "globalstatus" true}
+                           "globalstatus" true
+                           "icons_enabled" true}
                 "sections" {"lualine_b" ["branch"
                                          "diff"
                                          (prefix "diagnostics" {"update_in_insert" true})]

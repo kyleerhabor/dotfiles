@@ -2,8 +2,8 @@
   {autoload {a aniseed.core}
    require [config.core
             config.option
-            config.autocmd
-            config.keymap]})
+            config.mapping
+            config.autocmd]})
 
 (def mods
   ;; Interestingly, when the plugins are loaded before the colorscheme, the background color is not used. For Neovide,

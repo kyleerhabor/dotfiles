@@ -28,8 +28,10 @@
 ;;;
 ;;; NOTE: I don't understand what 'shiftround' does.
 
+(def indent 2)
+
 (set opt.expandtab true)
-(set opt.shiftwidth 2)
+(set opt.shiftwidth indent)
 (set opt.wrap false)
 
 ;;; Window / Buffer

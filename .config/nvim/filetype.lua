@@ -1,5 +1,1 @@
-vim.filetype.add {
-  extension = {
-    edn = "clojure"
-  }
-}
+require("compiled/config/runtime/filetype")

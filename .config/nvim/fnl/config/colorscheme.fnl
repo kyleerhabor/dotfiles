@@ -5,9 +5,9 @@
 (when (not= "Apple_Terminal" vim.env.TERM_PROGRAM)
   (set vim.opt.termguicolors true))
 
+(vim.cmd "colorscheme gruvbox-material")
+
 (nvim.set_hl 0 "InlineEvaluationResult"
   (a.assoc (nvim.get_hl 0 {"name" "Comment"})
     "bold" true
     "italic" false))
-
-(vim.cmd "colorscheme gruvbox-material")

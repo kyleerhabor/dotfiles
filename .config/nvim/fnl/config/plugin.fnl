@@ -28,6 +28,9 @@
 
               "guns/vim-sexp" {"mod" (relative "sexp")}
 
+              ;;; Assistance
+              "folke/which-key.nvim" {"mod" (relative "which-key")} ; For some reason, I need to click "g" before localleader (,) works.
+
               ;;; The rest
 
               "andweeb/presence.nvim" {"mod" (relative "presence")}
@@ -37,6 +40,7 @@
               "ii14/lsp-command" {}
               "jghauser/mkdir.nvim" {}
               "levouh/tint.nvim" {"mod" (relative "tint")}
+              "Olical/nvim-local-fennel" {}
               ;; I tried oxocarbon, but it:
               ;; - had no configuration
               ;; - had no lualine support
@@ -54,17 +58,15 @@
               "neovim/nvim-lspconfig" {"mod" (relative "lsp")}
               "Olical/conjure" {"mod" (relative "conjure")}
               "radenling/vim-dispatch-neovim" {}
-              ;; Maybe tpope/vim-endwise?
+              ;; Maybe tpope/vim-endwise? tpope/vim-sleuth?
               "tpope/vim-characterize" {}
               "tpope/vim-commentary" {}
               "tpope/vim-dispatch" {}
               "tpope/vim-eunuch" {}
               "tpope/vim-fugitive" {}
               "tpope/vim-repeat" {}
-              "tpope/vim-sleuth" {}
               "tpope/vim-surround" {}
               "tpope/vim-vinegar" {}
-              "folke/which-key.nvim" {"mod" (relative "which-key")} ; For some reason, I need to click "g" before localleader (,) works.
               "nvim-lualine/lualine.nvim" {"requires" [;; For some reason, lualine does not load this.
                                                        (prefix "kyazdani42/nvim-web-devicons" {"opt" true})]
                                            "mod" (relative "lualine")}})

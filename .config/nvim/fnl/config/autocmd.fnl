@@ -1,16 +1,13 @@
 (module config.autocmd
   {autoload {c config.core
+             o config.option
              a aniseed.core
              str aniseed.string}
    import-macros [[{: augroup} :aniseed.macros.autocmds]]})
 
 (def opt vim.opt)
 
-;; By default, Commentary uses one colon. I prefer two.
-(augroup "CommentaryLisp"
-  [["FileType"] {"pattern" "clojure,fennel" ; Maybe just include every known lisp?
-                 "callback" #(set opt.commentstring ";; %s")}])
-
+;; When completion via <C-x><X-o> finishes, close the buffer.
 (augroup "Completion"
   [["CompleteDone"] {"command" "pclose"}])
 
@@ -36,7 +33,13 @@
                     (opt.modifiable:get)))))
 
 (augroup "HighlightYank"
-  [["TextYankPost"] {"callback" #(vim.highlight.on_yank {"timeout" c.highlight-duration
-                                                         ;; We can already see the selection, so there's no real benefit
-                                                         ;; to this.
-                                                         "on_visual" false})}])
+  ;; I'd like yanks that happen in "true visual mode" to not be counted, but there doesn't seem to be a way to get the
+  ;; mode before the yank.
+  [["TextYankPost"] {"callback" #(vim.highlight.on_yank {"timeout" c.highlight-duration})}])
+
+;; By default, Commentary uses one colon. I prefer two.
+;;
+;; TODO: Move this to a ftplugin.
+(augroup "CommentaryLisp"
+  [["FileType"] {"pattern" "clojure,fennel" ; Maybe just include every known lisp?
+                 "callback" #(set opt.commentstring ";; %s")}])

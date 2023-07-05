@@ -1,19 +1,21 @@
-(module config.keymap)
+(module config.mapping)
 
 (def keymap vim.keymap)
 
 ;; "Oh, but what if some program depends on esc and it isn't registered as a result!?" Too bad. :)
-(keymap.set "t" "<Esc>" "<C-\\><C-n>")
+(keymap.set "n" "<Space>" "<NOP>" {"noremap" true})
 
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
+
+(keymap.set "t" "<Esc>" "<C-\\><C-n>")
 (keymap.set "n" "<Leader>hs" ":set hlsearch!<Enter>" {"silent" true})
 
 ;;; I forgot what the first keymap was for, but the rest is to make the command key ⌘ with pasting not output <D-v>
 
-;; (nvim.set_keymap "n" "<Space>" "<NOP>" {"noremap" true
-;;                                         "silent" true})
+;; (keymap.set "n" "<Space>" "<NOP>" {"noremap" true
+;;                                    "silent" true})
 ;;
 ;; (when nvim.g.neovide
 ;;   (let [map (fn [mode rhs]
