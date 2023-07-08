@@ -48,5 +48,6 @@
 ;; When a Preview window is opened, automatically zoom it to fit. I really don't know why this isn't a built-in setting.
 (: (wf.new "Preview") :subscribe {wf.windowCreated (fn [window]
                                                      (let [app (window:application)]
+                                                       (app:selectMenuItem ["View" "Continuous Scroll"])
                                                        (app:selectMenuItem ["View" "Zoom to Fit"])))})
 ;; (: (wf.new ["Safari" "Safari Technology Preview"]) :subscribe {wf.windowFocused #$})
