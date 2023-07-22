@@ -49,5 +49,9 @@
 (: (wf.new "Preview") :subscribe {wf.windowCreated (fn [window]
                                                      (let [app (window:application)]
                                                        (app:selectMenuItem ["View" "Continuous Scroll"])
-                                                       (app:selectMenuItem ["View" "Zoom to Fit"])))})
+                                                       (app:selectMenuItem ["View" "Zoom to Fit"])))
+                                  wf.windowFullscreened (fn [window]
+                                                          (let [app (window:application)]
+                                                            (app:selectMenuItem ["View" "Continuous Scroll"])))})
+
 ;; (: (wf.new ["Safari" "Safari Technology Preview"]) :subscribe {wf.windowFocused #$})

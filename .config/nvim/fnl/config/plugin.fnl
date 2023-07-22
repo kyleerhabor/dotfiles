@@ -68,7 +68,8 @@
               "tpope/vim-surround" {}
               "tpope/vim-vinegar" {}
               "nvim-lualine/lualine.nvim" {"requires" [;; For some reason, lualine does not load this.
-                                                       (prefix "kyazdani42/nvim-web-devicons" {"opt" true})]
+                                                       ;; (prefix "kyazdani42/nvim-web-devicons" {"opt" false})
+                                                       ]
                                            "mod" (relative "lualine")}})
 
 (load plugins)
