@@ -1,8 +1,7 @@
-(module config.plugin.treesitter
-  {autoload {ts nvim-treesitter.configs}})
+(local {: setup} (require :nvim-treesitter.configs))
 
-(ts.setup {"ensure-installed" ["fennel" "lua"]
-           "auto_install" false
-           "highlight" {"enable" true}
-           "incremental_selection" {"enable" true}
-           "indent" {"enable" true}})
+(setup {"ensure-installed" ["fennel" "lua"]
+        "auto_install" false
+        "highlight" {"enable" true}
+        "incremental_selection" {"enable" true}
+        "indent" {"enable" true}})

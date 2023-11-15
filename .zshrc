@@ -129,6 +129,7 @@ export EDITOR='nvim'
 
 export ZSHC="$HOME/.zsh"
 
+source $ZSHC/init.zsh
 source $ZSHC/aliases.zsh
 
 # Syntax highlighting

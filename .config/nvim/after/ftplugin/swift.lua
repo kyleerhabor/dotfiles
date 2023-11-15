@@ -1,1 +1,1 @@
-require("compiled/config/runtime/after/ftplugin/swift")
+require("config/runtime/after/ftplugin/swift")

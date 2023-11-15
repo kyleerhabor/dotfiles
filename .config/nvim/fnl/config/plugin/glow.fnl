@@ -1,4 +1,3 @@
-(module config.plugin.glow
-  {autoload {: glow}})
+(local {: setup} (require :glow))
 
-(glow.setup {})
+(setup {})

@@ -1,4 +1,3 @@
-(module config.plugin.sexp
-  {autoload {str aniseed.string}})
+(local {: list} (require :config.util))
 
-(set vim.g.sexp_filetypes (str.join "," ["clojure" "fennel"]))
+(set vim.g.sexp_filetypes (list ["clojure" "fennel"]))

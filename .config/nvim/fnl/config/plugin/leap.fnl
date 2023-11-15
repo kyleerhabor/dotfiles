@@ -1,4 +1,3 @@
-(module config.plugin.leap
-  {autoload {: leap}})
+(local leap (require :leap))
 
 (leap.add_default_mappings)

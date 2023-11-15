@@ -1,1 +1,1 @@
-require("compiled/config/runtime/filetype")
+pcall(require, "compiled/config/runtime/filetype")

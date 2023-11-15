@@ -1,4 +1,3 @@
-(module config.plugin.tint
-  {autoload {: tint}})
+(local {: setup} (require :tint))
 
-(tint.setup)
+(setup)

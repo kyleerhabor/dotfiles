@@ -1,8 +1,6 @@
-(module config.plugin.which-key
-  {autoload {nvim aniseed.nvim
-             : which-key}})
+(local {: setup} (require :which-key))
 
-(set nvim.o.timeout true)
-(set nvim.o.timeoutlen 0)
+(set vim.opt.timeout true)
+(set vim.opt.timeoutlen 0)
 
-(which-key.setup {})
+(setup {})

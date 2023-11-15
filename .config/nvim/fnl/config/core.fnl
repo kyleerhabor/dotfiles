@@ -1,13 +1,8 @@
-(module config.core
-  {autoload {nvim aniseed.nvim}})
-
-(def highlight-duration 500)
-
 ;;;; This module is for anything "central" to the application running Neovim (e.g. Neovide configuration).
 
-(def neovide? vim.g.neovide)
+(local neovide? vim.g.neovide)
 
-(defn alpha [n]
+(fn alpha [n]
   (string.format "%x" (math.floor (* n 255))))
 
 (set vim.opt.guifont (if neovide?
@@ -15,7 +10,7 @@
                        "SF Mono:h14"
                        "SF Mono Powerline:h14"))
 
-(set vim.g.neovide_transparency 0)
+(set vim.g.neovide_theme "dark")
 
 ;; The color is from Oxocarbon's background blend (https://github.com/nyoom-engineering/oxocarbon.nvim).
 ;;
@@ -27,5 +22,6 @@
   ;; clients (like Neovim for Mac; https://github.com/JaySandhu/neovim-mac), it's not so easy.
   (set vim.o.cursorlineopt "number")
 
-  ;; Neovide starts in the root directory, which is annoying.
-  (nvim.command "cd ~"))
+  (vim.api.nvim_command "cd ~/.config/nvim"))
+
+{"highlight" 500}

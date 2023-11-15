@@ -1,4 +1,12 @@
+;; (fn package-path [path]
+;;   (set package.path (.. package.path ";" path)))
+;;
+;; (package-path (.. hs.configdir "/Spoons/?.spoon/init.lua"))
+
 (local wf hs.window.filter)
+
+(fn first [table]
+  (. table 1))
 
 (fn last [table]
   (. table (length table)))
@@ -8,6 +16,53 @@
     (icollect [index value (ipairs table)]
       (if (not= index len)
         value))))
+
+(fn copy [table]
+  (collect [key value (pairs table)]
+    key value))
+
+(fn append [tbl value]
+  (table.insert tbl value)
+  tbl)
+
+(fn append-kv [tbl key value]
+  (tset tbl key value)
+  tbl)
+
+(fn inc [number]
+  (+ number 1))
+
+(fn map [f tbl]
+  (collect [key val (pairs tbl)]
+    (f key val)))
+
+(fn mapkey [f tbl]
+  (map #(values (f $1) $2) tbl))
+
+(fn mapval [f tbl]
+  (map #(values $1 (f $2)) tbl))
+
+(fn filter [f tbl]
+  (collect [key val (pairs tbl)]
+    (if (f key val)
+      (values key val))))
+
+(fn sfilter [f tbl]
+  (icollect [key val (pairs tbl)]
+    (if (f key val)
+      val)))
+
+(fn shift [tbl len distance]
+  (mapkey
+    (fn [key]
+      (let [shifted (% (+ key distance) (inc len))]
+        (if (< shifted key)
+          (inc shifted)
+          shifted)))
+    tbl))
+
+(fn nil? [x]
+  (= nil x))
 
 (fn currentApp []
   (hs.application.frontmostApplication))
@@ -22,6 +77,8 @@
    wf.windowUnfocused (fn []
                         (each [_ hotkey (ipairs hotkeys)]
                           (hotkey:disable)))})
+
+(local hyper-key ["command" "shift" "option" "control"])
 
 ;;; Doppler
 
@@ -39,11 +96,18 @@
                           ;;                   (print (: (: (currentWindow) :asHSApplication) :title)))
                           })
 
-(local doppler-hotkeys
-  (icollect [keys f (pairs doppler-shortcuts)]
+(local meta-shortcuts {(append (copy hyper-key) "F") #(: (currentApp) :selectMenuItem ["File" "Open With" "MusicBrainz Picard"])})
+
+(fn hotkeys [shortcuts]
+  (icollect [keys f (pairs shortcuts)]
     (hs.hotkey.new (butlast keys) (last keys) f)))
 
+(local doppler-hotkeys (hotkeys doppler-shortcuts))
+(local meta-hotkeys (hotkeys meta-shortcuts))
+
 (: (wf.new "Doppler") :subscribe (app-hotkey-events doppler-hotkeys))
+
+(: (wf.new "Meta") :subscribe (app-hotkey-events meta-hotkeys))
 
 ;; When a Preview window is opened, automatically zoom it to fit. I really don't know why this isn't a built-in setting.
 (: (wf.new "Preview") :subscribe {wf.windowCreated (fn [window]
@@ -54,4 +118,171 @@
                                                           (let [app (window:application)]
                                                             (app:selectMenuItem ["View" "Continuous Scroll"])))})
 
-;; (: (wf.new ["Safari" "Safari Technology Preview"]) :subscribe {wf.windowFocused #$})
+(fn launched [name f]
+  (let [watcher (hs.application.watcher.new
+                  (fn [app-name event app]
+                    (let [launched hs.application.watcher.launched]
+                      (match [app-name event] [name launched]
+                        (f app)))))]
+    (watcher:start)
+    watcher))
+
+(launched "Doppler"
+  (fn []
+    ;; This sets Doppler as the current music app. It's useful so actions that work with audio (e.g. clicking the side
+    ;; of an AirPod) don't open Apple Music by default.
+    (hs.osascript.applescriptFromFile "scripts/doppler-launch.scpt")))
+
+(launched "Safari"
+  (fn [app]
+    ;; TODO: Convert this to use the accessibility API (as this is very fragile).
+    (let [codes hs.keycodes.map
+          tab codes.tab
+          space codes.space
+          settings (hs.eventtap.event.newKeyEvent ["cmd"] "," true)
+          forward (hs.eventtap.event.newKeyEvent [] tab true)
+          back (hs.eventtap.event.newKeyEvent ["shift"] tab true)
+          press (hs.eventtap.event.newKeyEvent [] space true)]
+      (settings:post app)
+      (for [_ 1 11]
+        (forward:post app))
+      (press:post app)
+      (for [_ 1 13]
+        (back:post app))
+      (press:post app))))
+
+(fn key [key modifiers action]
+  (hs.hotkey.bind modifiers key
+    action nil action))
+
+(local control-step 5)
+
+(fn device-volume []
+  (match (hs.audiodevice.defaultOutputDevice) device
+    (match (device:volume) volume
+      {:device device
+       :volume volume})))
+
+;; Increase system volume
+(key "D" hyper-key
+  (fn []
+    (match (device-volume) {: device : volume}
+      (do
+        (device:setOutputVolume (+ volume control-step))))))
+
+;; Decrease system volume
+(key "A" hyper-key
+  (fn []
+    (match (device-volume) {: device : volume}
+      (device:setOutputVolume (- volume control-step)))))
+
+;; Increase brightness
+(key "W" hyper-key
+  (fn []
+    (hs.brightness.set (+ (hs.brightness.get) control-step))))
+
+;; Decrease brightness
+(key "X" hyper-key
+  (fn []
+    (hs.brightness.set (- (hs.brightness.get) control-step))))
+
+(local apps {"Activity Monitor" "com.apple.ActivityMonitor"
+             "Books" "com.apple.iBooksX"
+             "Doppler" "co.brushedtype.doppler-macos"
+             "Finder" "com.apple.finder"
+             "Firefox" "org.mozilla.firefox"
+             "IINA" "com.colliderli.iina"
+             "Mail" "com.apple.mail"
+             "Meta" "com.nightbirdsevolve.Meta"
+             "MusicBrainz Picard" "org.musicbrainz.Picard"
+             "Neovide" "com.neovide.neovide"
+             "Pixelmator Pro" "com.pixelmatorteam.pixelmator.x"
+             "Preview" "com.apple.Preview"
+             "Safari" "com.apple.Safari"
+             "Sequential" "com.kyleerhabor.Sequential"
+             "Shortcuts" "com.apple.shortcuts"
+             "Terminal" "com.apple.Terminal"
+             "Transmission" "org.m0k.transmission"
+             "Visual Studio Code" "com.microsoft.VSCode"
+             "Xcode" "com.apple.dt.Xcode"})
+
+(local switches {"1" ["Doppler"]
+                 "a" ["Activity Monitor"]
+                 "b" ["Books"]
+                 "f" ["Finder" "Firefox"]
+                 "i" ["IINA"]
+                 "m" ["Meta" "MusicBrainz Picard" "Mail"]
+                 "n" ["Neovide"]
+                 "p" ["Preview" "Pixelmator Pro"]
+                 "s" ["Safari" "Sequential" "Shortcuts"]
+                 "t" ["Terminal" "Transmission"]
+                 "x" ["Xcode"]})
+
+(local app-switches
+  (mapval
+    (fn [names]
+      {"position" 1
+       "apps" (mapval #(. apps $) names)}) switches))
+
+(var prior-key nil)
+
+(local app-switcher
+  (hs.eventtap.new [hs.eventtap.event.types.keyDown]
+    (fn [event]
+      (let [flags (event:getFlags)]
+        (if (and flags.fn flags.ctrl)
+          ;; If we don't specify clean characters, chars comes out blank.
+          (let [chars (event:getCharacters true)]
+            (match (. app-switches chars) switch
+              (let [names switch.apps
+                    count (length names)
+                    pos switch.position
+                    ;; prior-key assumes you're relying solely on itself for app switching. Fix it by considering if
+                    ;; the current app is the same target app.
+                    pos (if (= chars prior-key) (inc pos) pos)
+                    pos (if (> pos count) 1 pos)
+                    onames (shift names count (inc (- count pos)))
+                    apps (mapval #(first (hs.application.applicationsForBundleID $)) onames)
+                    current (currentApp)
+                    apps (sfilter #(and
+                                     (not (nil? $2))
+                                     (not= (current:path) ($2:path))) apps)]
+                (match (first apps) app
+                  (do
+                    (print (.. "[Switcher] Activating " (app:title) "..."))
+                    (when (hs.application.launchOrFocus (app:path))
+                      (set prior-key chars)
+                      (set switch.position pos))
+                    true))))))))))
+
+(app-switcher:start)
+
+(var prior-quit-app-pid nil)
+(var prior-quit-timestamp nil)
+
+(local quit-watcher
+  (hs.eventtap.new [hs.eventtap.event.types.keyDown]
+    (fn [event]
+      (let [flags (event:getFlags)]
+        (if flags.cmd
+          (let [chars (event:getCharacters)]
+            (if (= "q" chars)
+              (let [app (currentApp)
+                    pid (app:pid)
+                    ts (event:timestamp)]
+                (if (and
+                      (= prior-quit-app-pid pid)
+                      (>= 1_000_000_000 (- ts prior-quit-timestamp)))
+                  false
+                  (do
+                    (print (.. "User tried to quit " (app:title)))
+                    (set prior-quit-app-pid pid)
+                    (set prior-quit-timestamp ts)
+                    true))))))))))
+
+(quit-watcher:start)
+
+(set hs.shutdownCallback
+  (fn []
+    (quit-watcher:stop)
+    (app-switcher:stop)))

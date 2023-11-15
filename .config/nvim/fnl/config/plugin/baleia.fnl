@@ -1,8 +1,5 @@
-(module config.plugin.baleia
-  {autoload {nvim aniseed.nvim
-             : baleia}})
+(local {: setup} (require :baleia))
+(local {: command} (require :config.autocmd))
+(local b (setup {"line_starts_at" 3}))
 
-(let [b (baleia.setup {"line_starts_at" 3})]
-  (nvim.create_autocmd "BufWinEnter" {"pattern" "conjure-log-*"
-                                      "callback" (fn [_]
-                                                   (b.automatically (nvim.fn.bufnr "%")))}))
+(command "BufWinEnter" "Baleia" {"callback" #(b.automatically (vim.fn.bufnr "%"))})

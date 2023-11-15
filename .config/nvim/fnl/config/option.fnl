@@ -1,7 +1,4 @@
-(module config.option
-  {import-macros [[{: autocmd} :aniseed.macros.autocmds]]})
-
-(def opt vim.opt)
+(local opt vim.opt)
 
 ;;; Files
 
@@ -28,11 +25,12 @@
 ;;;
 ;;; NOTE: I don't understand what 'shiftround' does.
 
-(def indent 2)
+(local indent 2)
 
 (set opt.expandtab true)
 (set opt.shiftwidth indent)
 (set opt.wrap false)
+(set opt.breakindent true)
 
 ;;; Window / Buffer
 
