@@ -1,1 +1,1 @@
-eval "$(navi widget zsh)"
+# eval "$(navi widget zsh)"
