@@ -163,18 +163,21 @@
       {:device device
        :volume volume})))
 
+(fn set-volume [device level]
+  (device:setOutputVolume level)
+  (device:setOutputMuted (<= level 0)))
+
 ;; Increase system volume
 (key "D" hyper-key
   (fn []
     (match (device-volume) {: device : volume}
-      (do
-        (device:setOutputVolume (+ volume control-step))))))
+      (set-volume device (+ volume control-step)))))
 
 ;; Decrease system volume
 (key "A" hyper-key
   (fn []
     (match (device-volume) {: device : volume}
-      (device:setOutputVolume (- volume control-step)))))
+      (set-volume device (- volume control-step)))))
 
 ;; Increase brightness
 (key "W" hyper-key
@@ -193,15 +196,21 @@
              "Firefox" "org.mozilla.firefox"
              "IINA" "com.colliderli.iina"
              "Mail" "com.apple.mail"
+             "MarkEdit" "app.cyan.markedit"
              "Meta" "com.nightbirdsevolve.Meta"
              "MusicBrainz Picard" "org.musicbrainz.Picard"
              "Neovide" "com.neovide.neovide"
+             "Pages" "com.apple.iWork.Pages"
              "Pixelmator Pro" "com.pixelmatorteam.pixelmator.x"
              "Preview" "com.apple.Preview"
+             "Reminders" "com.apple.reminders"
              "Safari" "com.apple.Safari"
              "Sequential" "com.kyleerhabor.Sequential"
+             "SF Symbols" "com.apple.SFSymbols"
              "Shortcuts" "com.apple.shortcuts"
+             "System Settings" "com.apple.systempreferences"
              "Terminal" "com.apple.Terminal"
+             "The Unarchiver" "cx.c3.theunarchiver"
              "Transmission" "org.m0k.transmission"
              "Visual Studio Code" "com.microsoft.VSCode"
              "Xcode" "com.apple.dt.Xcode"})
@@ -211,11 +220,13 @@
                  "b" ["Books"]
                  "f" ["Finder" "Firefox"]
                  "i" ["IINA"]
-                 "m" ["Meta" "MusicBrainz Picard" "Mail"]
+                 "m" ["Meta" "MusicBrainz Picard" "Mail" "MarkEdit"]
                  "n" ["Neovide"]
-                 "p" ["Preview" "Pixelmator Pro"]
-                 "s" ["Safari" "Sequential" "Shortcuts"]
-                 "t" ["Terminal" "Transmission"]
+                 "p" ["Pages" "Preview" "Pixelmator Pro"]
+                 "r" ["Reminders"]
+                 "s" ["Safari" "Sequential" "System Settings" "SF Symbols" "Shortcuts"]
+                 "t" ["Terminal" "Transmission" "The Unarchiver"]
+                 "v" ["Visual Studio Code"]
                  "x" ["Xcode"]})
 
 (local app-switches
@@ -224,7 +235,7 @@
       {"position" 1
        "apps" (mapval #(. apps $) names)}) switches))
 
-(var prior-key nil)
+(var prior-switched-app nil)
 
 (local app-switcher
   (hs.eventtap.new [hs.eventtap.event.types.keyDown]
@@ -234,24 +245,21 @@
           ;; If we don't specify clean characters, chars comes out blank.
           (let [chars (event:getCharacters true)]
             (match (. app-switches chars) switch
-              (let [names switch.apps
-                    count (length names)
+              (let [current (currentApp)
+                    path (current:path)
+                    names switch.apps
+                    len (length names)
                     pos switch.position
-                    ;; prior-key assumes you're relying solely on itself for app switching. Fix it by considering if
-                    ;; the current app is the same target app.
-                    pos (if (= chars prior-key) (inc pos) pos)
-                    pos (if (> pos count) 1 pos)
-                    onames (shift names count (inc (- count pos)))
+                    pos (if (= prior-switched-app (current:pid)) (inc pos) pos)
+                    pos (if (> pos len) 1 pos)
+                    onames (shift names len (inc (- len pos)))
                     apps (mapval #(first (hs.application.applicationsForBundleID $)) onames)
-                    current (currentApp)
-                    apps (sfilter #(and
-                                     (not (nil? $2))
-                                     (not= (current:path) ($2:path))) apps)]
+                    apps (sfilter #(and $2 (not= path ($2:path))) apps)]
                 (match (first apps) app
                   (do
                     (print (.. "[Switcher] Activating " (app:title) "..."))
                     (when (hs.application.launchOrFocus (app:path))
-                      (set prior-key chars)
+                      (set prior-switched-app (app:pid))
                       (set switch.position pos))
                     true))))))))))
 
