@@ -1,4 +1,3 @@
-(module config.plugin.modes
-  {autoload {: modes}})
+(local modes (require :modes))
 
-(modes.setup)
+(modes.setup {"triggers_blacklist" {"n" ["d" "y"]}})

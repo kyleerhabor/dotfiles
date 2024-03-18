@@ -2,7 +2,7 @@
 
 # Hide the desktop icons (specifically folders)
 #
-# Note that this disables clicking the wallpaper to minimize the current windows in Stage Manager.
+# This disables clicking the wallpaper to minimize the current windows in Stage Manager.
 defaults write com.apple.finder CreateDesktop true
 
 ## Window
@@ -24,7 +24,7 @@ sudo defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly false
 
 # Disable the delay when hovering the mouse at the edge of the screen for the dock
 #
-# Note that this does not apply to full screen apps.
+# This does not apply in full screen mode.
 defaults write com.apple.dock autohide-delay -int 0
 
 ## Relaunch processes

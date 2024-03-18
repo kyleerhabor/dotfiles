@@ -22,6 +22,7 @@
   ;; clients (like Neovim for Mac; https://github.com/JaySandhu/neovim-mac), it's not so easy.
   (set vim.o.cursorlineopt "number")
 
-  (vim.api.nvim_command "cd ~/.config/nvim"))
+  (vim.api.nvim_command "cd ~"))
 
+;; This should probably be moved to some constants file.
 {"highlight" 500}

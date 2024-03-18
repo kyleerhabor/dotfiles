@@ -1,1 +1,3 @@
-require("fennel").install().dofile("init.fnl")
+local fennel = require("fennel")
+
+fennel.install().dofile("init.fnl")

@@ -13,5 +13,6 @@ export NVM_DIR="$HOME/.nvm"
 #   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 # fi
 
-# Mangadex Downloader
-export MANGADEXDL_CONFIG_ENABLED=true
+# MacPorts
+
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"

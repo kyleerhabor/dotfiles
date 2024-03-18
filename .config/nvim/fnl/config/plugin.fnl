@@ -15,20 +15,23 @@
     (fn [use]
       (n.run!
         (fn [plug]
-          (let [p (plugin plug)
-                mod p.mod]
+          (let [plugin (plugin plug)
+                mod plugin.mod]
             (if mod
               (let [(ok err) (pcall require mod)]
                 (if (not ok)
                   (print
-                    (.. "Error requiring plugin module \"" (n.first p) "\":")
+                    (.. "Error requiring plugin module \"" (n.first plugin) "\":")
                     err))))
-            (use p)))
+            (use plugin)))
         plugins))))
 
-(local plugins ["wbthomason/packer.nvim"
+(local plugins [;; Package manager
+                ;;
+                ;; NOTE: Packer is deprecated, but its main successor—lazy.nvim—does not support multiple 
+                "wbthomason/packer.nvim"
                 "Olical/nfnl"
-                ["ggandor/leap.nvim" {"mod" (relative "leap")}]
+                ;; ["ggandor/leap.nvim" {"mod" (relative "leap")}]
                 "romainl/vim-cool"
                 ["guns/vim-sexp" {"mod" (relative "sexp")}]
                 ["folke/which-key.nvim" {"mod" (relative "which-key")}]
@@ -40,8 +43,6 @@
                 ["sainnhe/gruvbox-material" {"mod" (relative "gruvbox-material")}]
                 ["nvim-treesitter/nvim-treesitter" {"run" ":TSUpdate"
                                                     "mod" (relative "treesitter")}]
-                ["m00qek/baleia.nvim" {"mod" (relative "baleia")}]
-                "mvllow/modes.nvim"
                 ["neovim/nvim-lspconfig" {"mod" (relative "lsp")}]
                 ["Olical/conjure" {"mod" (relative "conjure")}]
                 "radenling/vim-dispatch-neovim"
@@ -51,9 +52,16 @@
                 "tpope/vim-eunuch"
                 "tpope/vim-fugitive"
                 "tpope/vim-repeat"
+                "tpope/vim-sexp-mappings-for-regular-people"
                 "tpope/vim-surround"
                 "tpope/vim-vinegar"
                 ["nvim-lualine/lualine.nvim" {"mod" (relative "lualine")}]
-                "mfussenegger/nvim-jdtls"])
+
+                ;; ;; Colorizes Conjure HUD
+                ;;
+                ;; For some reason, including this causes updating Packer plugins to grind the UI to a halt. I don't
+                ;; think it's dependent on the plugin load order, as putting it before Conjure had no affect.
+                ;; ["m00qek/baleia.nvim" {"mod" (relative "baleia")}]
+                ])
 
 (load plugins)
