@@ -14,9 +14,16 @@ HEADLINE_STATUS_END=')'
 ## zsh-syntax-highlighting
 
 # Makes pasting not highlight by default
-autoload -Uz bracketed-paste-magic
-zle -N bracketed-paste bracketed-paste-magic
+# autoload -Uz bracketed-paste-magic
+# zle -N bracketed-paste bracketed-paste-magic
 
 ## zsh-autosuggestions
 
 source $ZSHP/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+## fast-syntax-highlighting
+
+# Use constant highlight for pasting to not make it super slow.
+zle_highlight=("paste:fg=#000000,bg=#ffffff")
+
+source $ZSHP/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh

@@ -3,7 +3,7 @@ export ZSH="$HOME/.shell"
 source $ZSH/init.zsh
 
 # zsh-syntax-highlighting must be sourced at the end
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -145,3 +145,5 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 # # This has to be at the bottom, which is annoying.
 # source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+[[ "$TERM_PROGRAM" == "CodeEditApp_Terminal" ]] && . "/Applications/CodeEdit.app/Contents/Resources/codeedit_shell_integration.zsh"
