@@ -8,7 +8,7 @@
 # only relevant changes are committed.
 alias dotfiles="$(command -v git) --git-dir=$HOME/.dotfiles/.git --work-tree=$HOME"
 
-DOWNLOADS="$HOME/Downloads"
+DOWNLOADS=$HOME/Downloads
 
 ## Directories
 alias cdd="cd $DOWNLOADS"

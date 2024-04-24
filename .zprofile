@@ -1,14 +1,8 @@
-# Pyenv
+## Pyenv
 
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+export PYENV_ROOT=$HOME/.pyenv
+PYENV_BIN=$PYENV_ROOT/bin
 
-# Nvm
-export NVM_DIR="$HOME/.nvm"
+[ -d "$PYENV_BIN" ] && export PATH=$PYENV_BIN:$PATH
 
-# Neovide
-
-# if [ $__CFBundleIdentifier = "com.neovide.neovide" ]; then
-#   # Node needs to be loaded before Neovim starts (else it won't recognize it).
-#   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-# fi
+eval "$(pyenv init - --no-rehash)"

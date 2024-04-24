@@ -1,6 +1,3 @@
-(local {: setup} (require :which-key))
+(local which-key (require "which-key"))
 
-(set vim.opt.timeout true)
-(set vim.opt.timeoutlen 0)
-
-(setup {})
+(which-key.setup {})

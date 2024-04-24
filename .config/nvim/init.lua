@@ -1,36 +1,21 @@
--- Based on https://github.com/Olical/dotfiles/blob/main/stowed/.config/nvim/init.lua
-local root_path = vim.fn.stdpath("data") .. "/site/pack/packer/start"
+local pckr_path = vim.fn.stdpath("data") .. "/pckr/pckr.nvim"
+local pckr_url = "https://github.com/lewis6991/pckr.nvim.git"
 
-local function path_from_root(dir)
-  return root_path .. "/" .. dir
-end
-
-local function exists(path)
-  return vim.loop.fs_stat(path)
-end
-
-local function repo_url(user, repo)
-  return string.format("https://github.com/%s/%s", user, repo)
-end
-
-local function ensure(user, repo)
-  local path = path_from_root(repo)
-
-  if exists(path) then
-    return
-  end
-
+if not vim.loop.fs_stat(pckr_path) then
   vim.fn.system {
-    "git", "clone", repo_url(user, repo),
-    path
+    "git",
+    "clone",
+    "--filter=blob:none",
+    pckr_url,
+    pckr_path
   }
-
-  vim.api.nvim_command(string.format("packadd %s", repo))
 end
 
-ensure("wbthomason", "packer.nvim")
-ensure("Olical", "nfnl")
+vim.opt.rtp:prepend(pckr_path)
 
-vim.loader.enable()
+local nfnl = {
+  "Olical/nfnl",
+  config = "config/init"
+}
 
-require("config/init")
+require("pckr").add { nfnl }

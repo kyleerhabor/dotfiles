@@ -1,3 +1,3 @@
-(local {: setup} (require :tint))
+(local tint (require "tint"))
 
-(setup)
+(tint.setup {})

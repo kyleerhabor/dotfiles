@@ -1,45 +1,42 @@
-(local opt vim.opt)
+;; Don't show command sequences (bottom trailing edge)
+;;
+;; Neovim shows the internal representation of commands, resulting in sequences like "<80>ü^D". I don't need to see
+;; that.
+(set vim.opt.showcmd false)
 
-;;; Files
+;; Dedicate one column for the sign column.
+;;
+;; This will later be useful for repreesnting modified lines in git.
+(set vim.opt.signcolumn "yes:1")
 
-(set opt.autowriteall true)
+;;; Extra
 
-;;; Mouse
+(set vim.opt.autowriteall true)
+(set vim.opt.showmode false)
+(set vim.opt.shiftwidth 2)
+(set vim.opt.expandtab true)
+(set vim.opt.wrap false)
 
-(set opt.mouse "a")
+(set vim.opt.timeout true)
+(set vim.opt.timeoutlen 400)
 
-;;; Screen
-;;;
-;;; NOTE: I tried a cmdheight of 0, which kind of worked, but sometimes flashed with lualine and created more prompts (hit / enter).
+(set vim.opt.number true)
+(set vim.opt.numberwidth 5)
+(set vim.opt.relativenumber true)
+(set vim.opt.listchars "trail:.,extends:→")
+(set vim.opt.undofile true)
 
-(set opt.showcmd false) ; I don't see this ever being useful.
-(set opt.showmode false)
+(local leader ",")
 
-;;; Search
+(set vim.g.mapleader leader)
+(set vim.g.maplocalleader leader)
 
-(set opt.gdefault true) ; This is deprecated, but I don't care.
-(set opt.ignorecase true)
-(set opt.smartcase true)
+;;; Colorscheme
 
-;;; Text
-;;;
-;;; NOTE: I don't understand what 'shiftround' does.
+(when (not= "Apple_Terminal" vim.env.TERM_PROGRAM)
+  (set vim.opt.termguicolors true))
 
-(local indent 2)
+(set vim.g.gruvbox_material_ui_contrast "low")
 
-(set opt.expandtab true)
-(set opt.shiftwidth indent)
-(set opt.wrap false)
-(set opt.breakindent true)
-
-;;; Window / Buffer
-
-(set opt.cursorline true)
-(set opt.listchars "trail:.,extends:→") ; For some reason, the paired table form doesn't work.
-(set opt.number true)
-(set opt.numberwidth 5)
-(set opt.relativenumber true)
-(set opt.scrolloff 1)
-(set opt.signcolumn "no") ; This is really just not useful. Virtual text keeps up the tradition of overlay!
-(set opt.splitright true)
-(set opt.undofile true)
+(when (not vim.g.neovide)
+  (set vim.g.gruvbox_material_transparent_background 2))

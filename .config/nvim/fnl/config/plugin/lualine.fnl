@@ -1,13 +1,11 @@
-(local {: setup} (require :lualine))
-(local {: prefix} (require :config.util))
+(local {: prefix} (require "config.util"))
+(local {: setup} (require "lualine"))
 
-(setup {"options" {"theme" "gruvbox-material"
-        "globalstatus" true
-        "icons_enabled" true}
+(setup {"options" {"icons_enabled" false
+                   "globalstatus" true
+		   "section_separators" {"left" "" "right" ""}}
         "sections" {"lualine_b" ["branch"
-                                 "diff"
-                                 (prefix "diagnostics" {"update_in_insert" true})]
-        "lualine_c" [(prefix "filename" {"path" 1})]
-        "lualine_x" ["filetype"]}
-        "tabline" {"lualine_z" [(prefix "tabs" {;; Only display tabs when there are multiple.
-                                                "cond" #(< 1 (vim.fn.tabpagenr "$"))})]}})
+				 "diff"
+				 (prefix "diagnostics" {"update_in_insert" true})]
+	            "lualine_c" [(prefix "filename" {"path" 1})]
+	            "lualine_x" ["filetype"]}})
