@@ -12,7 +12,7 @@ DOWNLOADS=$HOME/Downloads
 
 ## Directories
 alias cdd="cd $DOWNLOADS"
-alias cdv="cd $DOWNLOADS/Videos"
+alias cdv="cd '$DOWNLOADS/[@] Videos'"
 alias cddev="cd $HOME/Developer"
 
 ## History

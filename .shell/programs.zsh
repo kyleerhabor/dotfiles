@@ -1,3 +1,13 @@
+# For a source file and destination directory, create a symbolic link in the destination with
+# the source's filename.
+link2 () {
+  local src=$1
+  local path2=$2
+  local dst="$path2/$(basename $src)"
+
+  ln -s -F -i "$src" "$dst"
+}
+
 ## Python
 
 alias py=python
@@ -6,8 +16,7 @@ alias py=python
 
 MANGADEX_FOLDER=$HOME/Data/Remote/Titles
 
-# Download chapters from Mangadex
-mangadex () {
+_mangadex () {
   local url=$1
 
   # Note the exclusion of the --no-group-name option. This option removes group names from
@@ -19,16 +28,29 @@ mangadex () {
   # I'll have to manually find the chapter in question and download the correct one.
   mangadex-dl "$url" \
     --folder "$MANGADEX_FOLDER" \
-    --language en \
     --no-oneshot-chapter \
     --save-as cbz \
     --progress-bar-layout none \
     "${@:2}"
 }
 
+# Download chapters from Mangadex
+mangadex () {
+  local url=$1
+
+  _mangadex "$url" --language en "${@:2}"
+}
+
+mdcover () {
+  local url=$1
+
+  _mangadex "cover:$url" --language all "${@:2}"
+}
+
 ## yt-dlp
 
 YTDLP_CONFIG_VIDEO=$HOME/.config/yt-dlp/config/video
+YTDLP_CONFIG_MUSIC=$HOME/.config/yt-dlp/config/music
 
 # Download videos (mostly from YouTube).
 #
@@ -51,6 +73,12 @@ ytv () {
   local url=$1
 
   yt-dlp $url --config-location $YTDLP_CONFIG_VIDEO ${@:2}
+}
+
+ytm () {
+  local url=$1
+
+  yt-dlp $url --config-location $YTDLP_CONFIG_MUSIC ${@:2}
 }
 
 ## rtorrent

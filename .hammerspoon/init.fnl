@@ -1,8 +1,5 @@
 ;;; Standard Lua operations
 
-(fn nil? [x]
-  (= nil x))
-
 (fn inc [number]
   (+ number 1))
 
@@ -40,8 +37,8 @@
 (fn mapval [f tbl]
   (map #(values $1 (f $2)) tbl))
 
-(fn tableset [tbl f]
-  (map #(values (f $1 $2) true) tbl))
+(fn tableset [tbl]
+  (map #(values $2 true) tbl))
 
 (fn filter [f tbl]
   (collect [key val (pairs tbl)]
@@ -65,10 +62,10 @@
 
 ;;; Hammerspoon conveniences
 
-(fn currentApp []
+(fn current-app []
   (hs.application.frontmostApplication))
 
-(fn currentWindow []
+(fn current-window []
   (hs.axuielement.windowElement (hs.window.focusedWindow)))
 
 (fn app-by-bundle-id [id]
@@ -94,17 +91,17 @@
 ;; like displaying the assigned shortcut), it sometimes doesn't work (at least, for the applications listed; it does for
 ;; e.g. Safari, which I have ⌘E to duplicate the current tab).
 
-(local doppler-shortcuts {["command" "E"] #(: (currentApp) :selectMenuItem ["Song" "Edit Info With" "Meta"])
-                          ["command" "shift" "L"] #(: (currentApp) :selectMenuItem ["Song" "Like"])
+(local doppler-shortcuts {["command" "E"] #(: (current-app) :selectMenuItem ["Song" "Edit Info With" "Meta"])
+                          ["command" "shift" "L"] #(: (current-app) :selectMenuItem ["Song" "Like"])
                           ;; ["command" "R"] (fn []
-                          ;;                   (: (currentWindow) :elementSearch
+                          ;;                   (: (current-window) :elementSearch
                           ;;                     (fn []
                           ;;                       (print "Hi?"))
                           ;;                     (hs.axuielement.searchCriteriaFunction "AXCell"))
-                          ;;                   (print (: (: (currentWindow) :asHSApplication) :title)))
+                          ;;                   (print (: (: (current-window) :asHSApplication) :title)))
                           })
 
-(local meta-shortcuts {(append (copy hyper-key) "F") #(: (currentApp) :selectMenuItem ["File" "Open With" "MusicBrainz Picard"])})
+(local meta-shortcuts {(append (copy hyper-key) "F") #(: (current-app) :selectMenuItem ["File" "Open With" "MusicBrainz Picard"])})
 
 (fn hotkeys [shortcuts]
   (icollect [keys f (pairs shortcuts)]
@@ -139,28 +136,27 @@
   (launched "Doppler"
     (fn []
       ;; This sets Doppler as the current music app. It's useful so actions that work with audio (e.g. clicking the side
-      ;; of an AirPod) don't open Apple Music by default.
       (hs.osascript.applescriptFromFile "scripts/doppler-launch.scpt"))))
 
 (local keycodes hs.keycodes.map)
 
-(global safari-launched
-  (launched "Safari"
-    (fn [app]
-      ;; TODO: Convert this to use the accessibility API (as this is very fragile).
-      (let [tab keycodes.tab
-            space keycodes.space
-            settings (hs.eventtap.event.newKeyEvent ["cmd"] "," true)
-            forward (hs.eventtap.event.newKeyEvent [] tab true)
-            back (hs.eventtap.event.newKeyEvent ["shift"] tab true)
-            press (hs.eventtap.event.newKeyEvent [] space true)]
-        (settings:post app)
-        (for [_ 1 11]
-          (forward:post app))
-        (press:post app)
-        (for [_ 1 13]
-          (back:post app))
-        (press:post app)))))
+;(global safari-launched
+;  (launched "Safari"
+;    (fn [app]
+;      ;; TODO: Convert this to use the accessibility API (as this is very fragile).
+;      (let [tab keycodes.tab
+;            space keycodes.space
+;            settings (hs.eventtap.event.newKeyEvent ["cmd"] "," true)
+;            forward (hs.eventtap.event.newKeyEvent [] tab true)
+;            back (hs.eventtap.event.newKeyEvent ["shift"] tab true)
+;            press (hs.eventtap.event.newKeyEvent [] space true)]
+;        (settings:post app)
+;        (for [_ 1 11]
+;          (forward:post app))
+;        (press:post app)
+;        (for [_ 1 13]
+;          (back:post app))
+;        (press:post app)))))
 
 (fn key [key modifiers action]
   (hs.hotkey.bind modifiers key
@@ -190,22 +186,13 @@
     (match (device-volume) {: device : volume}
       (set-volume device (- volume control-step)))))
 
-;; ;; Increase brightness
-;; (key "W" hyper-key
-;;   (fn []
-;;     (hs.brightness.set (+ (hs.brightness.get) control-step))))
-
-;; ;; Decrease brightness
-;; (key "X" hyper-key
-;;   (fn []
-;;     (hs.brightness.set (- (hs.brightness.get) control-step))))
-
 (local apps {"Activity Monitor" "com.apple.ActivityMonitor"
              "Arc" "company.thebrowser.Browser"
              "Bike" "com.hogbaysoftware.Bike"
              "Books" "com.apple.iBooksX"
              "Console" "com.apple.Console"
              "Doppler" "co.brushedtype.doppler-macos"
+             "Element" "im.riot.app"
              "Finder" "com.apple.finder"
              "Firefox" "org.mozilla.firefox"
              "Hyperkey" "com.knollsoft.Hyperkey"
@@ -219,22 +206,25 @@
              "Neovide" "com.neovide.neovide"
              "Notes" "com.apple.Notes"
              "Orion" "com.kagi.kagimacOS"
+             "Orion RC" "com.kagi.kagimacOS.RC"
              "Pages" "com.apple.iWork.Pages"
              "Photos" "com.apple.Photos"
              "Pixelmator Pro" "com.pixelmatorteam.pixelmator.x"
              "Preview" "com.apple.Preview"
              "Reminders" "com.apple.reminders"
              "Safari" "com.apple.Safari"
-             "Safari Discord" "com.apple.Safari.WebApp.BB9407FF-3A12-4E98-88C4-AFC7E8210C8A"
+             "Safari Discord" "com.apple.Safari.WebApp.2E50AFEE-7B57-46DA-98D1-BE3565BF2694"
              "Advance" "com.kyleerhabor.Advance"
              "SF Symbols" "com.apple.SFSymbols"
              "Shortcuts" "com.apple.shortcuts"
              "Sublime Text" "com.sublimetext.4"
              "System Settings" "com.apple.systempreferences"
+             "TextEdit" "com.apple.TextEdit"
              "The Unarchiver" "cx.c3.theunarchiver"
              "Tor Browser" "org.torproject.torbrowser"
              "Transmission" "org.m0k.transmission"
              "Visual Studio Code" "com.microsoft.VSCode"
+             "VSCodium" "com.vscodium"
              "Xcode" "com.apple.dt.Xcode"
              "Zed" "dev.zed.Zed"})
 
@@ -243,17 +233,18 @@
                  "b" ["Bike" "Books"]
                  "c" ["Console"]
                  "d" ["Safari Discord"]
+                 "e" ["Element"]
                  "f" ["Finder" "Firefox"]
                  "i" ["IINA"]
                  "l" ["Latest"]
                  "m" ["Meta" "MusicBrainz Picard" "Mail" "MarkEdit" "Maps"]
                  "n" ["Neovide" "Notes"]
-                 "o" ["Orion"]
+                 "o" ["Orion" "Orion RC"]
                  "p" ["Pages" "Preview" "Pixelmator Pro" "Photos"]
                  "r" ["Reminders"]
                  "s" ["Safari" "System Settings" "SF Symbols" "Shortcuts" "Sublime Text"]
-                 "t" ["Transmission" "The Unarchiver" "Tor Browser"]
-                 "v" ["Visual Studio Code"]
+                 "t" ["TextEdit" "Transmission" "The Unarchiver" "Tor Browser"]
+                 "v" ["Visual Studio Code" "VSCodium"]
                  "x" ["Xcode"]
                  "z" ["Zed"]})
 
@@ -273,7 +264,7 @@
           ;; If we don't specify clean characters, chars comes out blank.
           (let [chars (event:getCharacters true)]
             (match (. app-switches chars) switch
-              (let [current (currentApp)
+              (let [current (current-app)
                     path (current:path)
                     names switch.apps
                     len (length names)
@@ -293,7 +284,7 @@
 
 (app-switcher:start)
 
-(local confirm-quit-apps (tableset ["Safari" "Doppler" "Finder"] #(. apps $2)))
+(local confirm-quit-apps (tableset (mapval (partial . apps) ["Safari" "Doppler" "Finder"])))
 
 (var prior-quit-app-pid nil)
 (var prior-quit-timestamp nil)
@@ -305,7 +296,7 @@
         (if flags.cmd
           (let [chars (event:getCharacters)]
             (if (= "q" chars)
-              (let [app (currentApp)]
+              (let [app (current-app)]
                 (if (. confirm-quit-apps (app:bundleID))
                   (let [pid (app:pid)
                         ts (event:timestamp)]
@@ -322,9 +313,6 @@
 
 (quit-watcher:start)
 
-(local command-tab-apps [])
-(local command-tab-excluded (tableset command-tab-apps #(. apps $2)))
-
 ;; Disable Command-Tab except for select applications (currently none)
 (global command-tab-watcher
   (hs.eventtap.new [hs.eventtap.event.types.keyDown]
@@ -332,8 +320,7 @@
       (let [flags (event:getFlags)]
         (if (and
               flags.cmd
-              (= "\t" (event:getCharacters))
-              (not (. command-tab-excluded (: (currentApp) :bundleID))))
+              (= "\t" (event:getCharacters)))
           true)))))
 
 (command-tab-watcher:start)
@@ -359,18 +346,71 @@
 
 (iina-watcher:start)
 
-(global finder-watcher
+(local key-up "\u{F700}")
+(local key-down "\u{F701}")
+
+(local programs [{"name" "Finder"
+                  "id" "com.apple.finder"
+                  "title" "Finder"}
+                 {"name" "mpv"
+                  "title" "mpv"}
+                 {"name" "Orion"
+                  "id" "com.kagi.kagimacOS"
+                  "title" "Orion"}
+                 {"name" "Transmission"
+                  "id" "org.m0k.transmission"
+                  "title" "Transmission"}])
+
+(local name->program (map #(values $2.name $2) programs))
+(local id->name (map #(values $1 $2.name) name->program))
+(local title->name (map #(values $1 $2.title) name->program))
+
+(fn app->name [app ids titles]
+  (let [ids (or ids id->name)
+        titles (or titles title->name)]
+    (or
+      (-?>> (app:bundleID) (. ids))
+      (-?>> (app:title) (. titles)))))
+
+(local keyprograms [;; "Select Startup Disk"
+                    {"name" "Finder"
+                     "key" key-up
+                     "flags" (tableset ["cmd" "shift"])}
+                    ;; "Open" alternative
+                    {"name" "Finder"
+                     "key" key-down
+                     "flags" (tableset ["cmd"])}
+                    ;; "Pause Selected"
+                    ;; {"name" "Transmission"
+                    ;;  "key" "."
+                    ;;  "flags" (tableset ["cmd"])}
+                    ;; "Pause All"
+                    {"name" "Transmission"
+                     "key" "."
+                     "flags" (tableset ["alt" "cmd"])}])
+
+(local name->keys
+  (accumulate [tbl {}
+               _ keyprog (ipairs keyprograms)]
+    (let [id (. (. name->program keyprog.name) "name")]
+      (append-kv tbl id (append (or (. tbl id) []) keyprog)))))
+
+
+(global keydown-watcher
   (hs.eventtap.new [hs.eventtap.event.types.keyDown]
     (fn [event]
-      (if (app? (currentApp) "Finder")
+      (match (-?>> (app->name (current-app)) (. name->keys)) keys
         (let [flags (event:getFlags)
-              chars (event:getCharacters)
-              up-key "\u{F700}"
-              down-key "\u{F701}"]
-          (or
-            ;; "Open" alternative
-            (and flags.cmd (= down-key chars))
-            ;; "Select Startup Disk"
-            (and flags.cmd flags.shift (= up-key chars))))))))
+              chars (event:getCharacters)]
+          (accumulate [val false
+                       _ keyprog (ipairs keys)
+                       &until val]
+            (and
+              ;; A workaround for (flags:containExactly ...) not working (at least, for me).
+              (= flags.cmd keyprog.flags.cmd)
+              (= flags.shift keyprog.flags.shift)
+              (= flags.alt keyprog.flags.alt)
+              (= flags.ctrl keyprog.flags.ctrl)
+              (= chars keyprog.key))))))))
 
-(finder-watcher:start)
+(keydown-watcher:start)
