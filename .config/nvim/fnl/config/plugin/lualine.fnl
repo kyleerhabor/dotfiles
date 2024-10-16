@@ -1,7 +1,12 @@
+(local {: colorscheme
+        : colorschemes} (require "config.core"))
 (local {: prefix} (require "config.util"))
 (local {: setup} (require "lualine"))
 
-(setup {"options" {"icons_enabled" false
+(local cscheme (. colorschemes colorscheme))
+
+(setup {"options" {"theme" (cscheme.lualine_theme)
+                   "icons_enabled" false
                    "globalstatus" true
 		   "section_separators" {"left" "" "right" ""}}
         "sections" {"lualine_b" ["branch"

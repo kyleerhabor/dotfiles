@@ -2,6 +2,6 @@
 
 (local mods ["config.option" "config.auto"
              "config.lsp"
-             "config.plugin"])
+             "config.plugin"]) ; ...
 
 (n.run! require mods)

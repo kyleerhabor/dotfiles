@@ -3,7 +3,10 @@
 # Hide the desktop icons (specifically folders)
 #
 # This disables clicking the wallpaper to minimize the current windows in Stage Manager.
-defaults write com.apple.finder CreateDesktop false
+defaults write com.apple.finder CreateDesktop -bool false
+
+# Show Quit menu item.
+defaults write com.apple.finder QuitMenuItem -bool true
 
 ## Window
 

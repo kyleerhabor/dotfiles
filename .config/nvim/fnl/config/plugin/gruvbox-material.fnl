@@ -1,4 +1,6 @@
-(local {: colorscheme} (require "config/core"))
+(local {: colorscheme} (require "config.core"))
 
-(when (= "gruvbox-material" colorscheme)
-  (vim.cmd "colorscheme gruvbox-material"))
+(local name "gruvbox-material")
+
+(when (= colorscheme name)
+  (vim.cmd.colorscheme name))

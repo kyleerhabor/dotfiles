@@ -1,6 +1,5 @@
+(local {: highlight} (require "config.core"))
 (local n (require "nfnl.core"))
-
-(local highlight 500)
 
 (fn group [name]
   (vim.api.nvim_create_augroup name {}))

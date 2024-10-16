@@ -3,4 +3,5 @@
 (fn prefix [x table]
   (n.assoc table 1 x))
 
-{: prefix}
+{: prefix
+ "term-apple" "Apple_Terminal"}

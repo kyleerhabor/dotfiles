@@ -1,3 +1,6 @@
+(local {: highlight} (require "config.core"))
+(local {: term-apple} (require "config.util"))
+
 ;; Don't show command sequences (bottom trailing edge)
 ;;
 ;; Neovim shows the internal representation of commands, resulting in sequences like "<80>ü^D". I don't need to see
@@ -9,7 +12,24 @@
 ;; This will later be useful for repreesnting modified lines in git.
 (set vim.opt.signcolumn "yes:1")
 
+;; Perform case-insensitive searching.
+(set vim.opt.ignorecase true)
+
+(vim.opt.formatoptions:append "r")
+(vim.opt.formatoptions:append "b")
+
+;; Evaluate trusted local files.
+(set vim.opt.exrc true)
+
+;; Split windows in the trailing direction.
+(set vim.opt.splitright true)
+
 ;;; Extra
+
+(set vim.g.conjure#highlight#enabled true)
+(set vim.g.conjure#highlight#timeout highlight)
+
+;;; Needs update
 
 (set vim.opt.autowriteall true)
 (set vim.opt.showmode false)
@@ -33,8 +53,7 @@
 
 ;;; Colorscheme
 
-(when (not= "Apple_Terminal" vim.env.TERM_PROGRAM)
-  (set vim.opt.termguicolors true))
+(set vim.opt.termguicolors (not= term-apple vim.env.TERM_PROGRAM))
 
 (set vim.g.gruvbox_material_ui_contrast "low")
 

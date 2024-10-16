@@ -226,12 +226,12 @@
              "Visual Studio Code" "com.microsoft.VSCode"
              "VSCodium" "com.vscodium"
              "Xcode" "com.apple.dt.Xcode"
-             "Zed" "dev.zed.Zed"})
+             "Zed" "dev.zed.Zed"
+             "Zen" "org.mozilla.com.zen.browser"})
 
 (local switches {"1" ["Doppler"]
                  "a" ["Advance" "Activity Monitor" "Arc"]
                  "b" ["Bike" "Books"]
-                 "c" ["Console"]
                  "d" ["Safari Discord"]
                  "e" ["Element"]
                  "f" ["Finder" "Firefox"]
@@ -239,14 +239,14 @@
                  "l" ["Latest"]
                  "m" ["Meta" "MusicBrainz Picard" "Mail" "MarkEdit" "Maps"]
                  "n" ["Neovide" "Notes"]
-                 "o" ["Orion" "Orion RC"]
+                 "o" ["Orion" "Orion RC" "Console"]
                  "p" ["Pages" "Preview" "Pixelmator Pro" "Photos"]
                  "r" ["Reminders"]
                  "s" ["Safari" "System Settings" "SF Symbols" "Shortcuts" "Sublime Text"]
                  "t" ["TextEdit" "Transmission" "The Unarchiver" "Tor Browser"]
                  "v" ["Visual Studio Code" "VSCodium"]
                  "x" ["Xcode"]
-                 "z" ["Zed"]})
+                 "z" ["Zed" "Zen"]})
 
 (local app-switches
   (mapval
@@ -260,7 +260,8 @@
   (hs.eventtap.new [hs.eventtap.event.types.keyDown]
     (fn [event]
       (let [flags (event:getFlags)]
-        (if (and flags.fn flags.ctrl)
+        ;; Fn-Control would be ideal, but conflicts with window management shortcuts in macOS 15.
+        (if (and flags.fn flags.cmd)
           ;; If we don't specify clean characters, chars comes out blank.
           (let [chars (event:getCharacters true)]
             (match (. app-switches chars) switch

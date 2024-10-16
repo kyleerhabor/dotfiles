@@ -18,4 +18,10 @@ local nfnl = {
   config = "config/init"
 }
 
-require("pckr").add { nfnl }
+local pckr = require("pckr")
+
+pckr.setup {
+  autoremove = true
+}
+
+pckr.add { nfnl }
