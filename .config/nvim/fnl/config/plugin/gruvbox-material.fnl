@@ -1,6 +1,9 @@
-(local {: colorscheme} (require "config.core"))
+(local {: colorscheme
+        : set-colorscheme} (require "config.colorscheme"))
 
-(local name "gruvbox-material")
+(set vim.g.gruvbox_material_ui_contrast "low")
+(set vim.g.gruvbox_material_transparent_background 2)
+(set vim.g.gruvbox_material_better_performance 1)
 
-(when (= colorscheme name)
-  (vim.cmd.colorscheme name))
+(if (= colorscheme "gruvbox-material")
+  (set-colorscheme))

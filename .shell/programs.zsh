@@ -1,11 +1,29 @@
-# For a source file and destination directory, create a symbolic link in the destination with
-# the source's filename.
+# For a source file and destination directory, create a symbolic link in the destination with the source's filename.
 link2 () {
-  local src=$1
-  local path2=$2
-  local dst="$path2/$(basename $src)"
+  local dst="$1"
 
-  ln -s -F -i "$src" "$dst"
+  for src in "${@:2}"; do
+    local dest="$dst/$(basename $src)"
+
+    ln -s -F -i "$src" "$dest"
+  done
+}
+
+package2 () {
+  local dst="$1"
+
+  for src in "${@:2}"; do
+    local name="$(basename $src)"
+    local folder="$dst/$name"
+    local dest="$dst/$name/$name.zip"
+
+    mkdir "$folder"
+    pushd "$src"
+
+    # Funnily enough, -0 has generated smaller filesizes than -9 for me, at times.
+    zip -r -0 -FS "$dest" .
+    popd
+  done
 }
 
 ## Python
@@ -14,20 +32,15 @@ alias py=python
 
 ## mangadex-downloader
 
-MANGADEX_FOLDER=$HOME/Data/Remote/Titles
+MANGADEX_FOLDER_PATH=$HOME/Data/Remote/Titles
 
 _mangadex () {
   local url=$1
 
-  # Note the exclusion of the --no-group-name option. This option removes group names from
-  # folders, leaving us with just the volume and chapter number (e.g. "Vol. 12 Ch. 65"). While
-  # the option is ideal, it's not appropriate to use since N groups may have uploaded for a
-  # manga—including for the same chapter. mangadex-downloader does not provide a option for
-  # resolving this conflict (it seems to just pick the oldest of the set), making it not ideal
-  # if a certain uploader's work is superior. Unfortunately, this requires manual labor, so
-  # I'll have to manually find the chapter in question and download the correct one.
+  # For 8.2 MB, level 9 compression from deflated, bzip2, or lzma yields 8 MB. It's not much, but hey...
   mangadex-dl "$url" \
-    --folder "$MANGADEX_FOLDER" \
+    --path "$MANGADEX_FOLDER_PATH/{manga.title} [MangaDex]" \
+    --filename-chapter "{manga.title} - c{chapter.chapter} (v{chapter.volume}) [MangaDex ({chapter.groups_name})]{file_ext}" \
     --no-oneshot-chapter \
     --save-as cbz \
     --progress-bar-layout none \

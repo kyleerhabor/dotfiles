@@ -197,15 +197,19 @@
              "Firefox" "org.mozilla.firefox"
              "Hyperkey" "com.knollsoft.Hyperkey"
              "IINA" "com.colliderli.iina"
+             "Keychain Access" "com.apple.keychainaccess"
              "Latest" "com.max-langer.Latest"
              "Mail" "com.apple.mail"
              "Maps" "com.apple.Maps"
              "MarkEdit" "app.cyan.markedit"
+             "Messages" "com.apple.MobileSMS"
              "Meta" "com.nightbirdsevolve.Meta"
              "MusicBrainz Picard" "org.musicbrainz.Picard"
              "Neovide" "com.neovide.neovide"
              "Notes" "com.apple.Notes"
+             "Obsidian" "md.obsidian"
              "Orion" "com.kagi.kagimacOS"
+             "Orion Discord" "com.kagi.kagimacOS.WebApp.BBD3F1A0-FBFA-4477-B309-BCDB4980F051"
              "Orion RC" "com.kagi.kagimacOS.RC"
              "Pages" "com.apple.iWork.Pages"
              "Photos" "com.apple.Photos"
@@ -213,14 +217,14 @@
              "Preview" "com.apple.Preview"
              "Reminders" "com.apple.reminders"
              "Safari" "com.apple.Safari"
-             "Safari Discord" "com.apple.Safari.WebApp.2E50AFEE-7B57-46DA-98D1-BE3565BF2694"
+             "Safari Technology Preview" "com.apple.SafariTechnologyPreview"
+             "Safari Discord" "com.apple.Safari.WebApp.CB259C90-4ADB-4F02-B46D-8D4D193F6998"
              "Advance" "com.kyleerhabor.Advance"
              "SF Symbols" "com.apple.SFSymbols"
              "Shortcuts" "com.apple.shortcuts"
              "Sublime Text" "com.sublimetext.4"
              "System Settings" "com.apple.systempreferences"
              "TextEdit" "com.apple.TextEdit"
-             "The Unarchiver" "cx.c3.theunarchiver"
              "Tor Browser" "org.torproject.torbrowser"
              "Transmission" "org.m0k.transmission"
              "Visual Studio Code" "com.microsoft.VSCode"
@@ -231,19 +235,21 @@
 
 (local switches {"1" ["Doppler"]
                  "a" ["Advance" "Activity Monitor" "Arc"]
-                 "b" ["Bike" "Books"]
-                 "d" ["Safari Discord"]
+                 ;; "b" is reserved.
+                 "c" ["Console"]
+                 "d" ["Safari Discord" "Orion Discord"]
                  "e" ["Element"]
                  "f" ["Finder" "Firefox"]
-                 "i" ["IINA"]
+                 "i" ["IINA" "Bike"]
+                 "k" ["Keychain Access"]
                  "l" ["Latest"]
-                 "m" ["Meta" "MusicBrainz Picard" "Mail" "MarkEdit" "Maps"]
+                 "m" ["Meta" "MusicBrainz Picard" "Mail" "MarkEdit" "Maps" "Messages"]
                  "n" ["Neovide" "Notes"]
-                 "o" ["Orion" "Orion RC" "Console"]
+                 "o" ["Obsidian" "Orion" "Orion RC" "Books"]
                  "p" ["Pages" "Preview" "Pixelmator Pro" "Photos"]
                  "r" ["Reminders"]
-                 "s" ["Safari" "System Settings" "SF Symbols" "Shortcuts" "Sublime Text"]
-                 "t" ["TextEdit" "Transmission" "The Unarchiver" "Tor Browser"]
+                 "s" ["Safari" "Safari Technology Preview" "System Settings" "SF Symbols" "Shortcuts" "Sublime Text"]
+                 "t" ["TextEdit" "Transmission" "Tor Browser"]
                  "v" ["Visual Studio Code" "VSCodium"]
                  "x" ["Xcode"]
                  "z" ["Zed" "Zen"]})
@@ -285,7 +291,7 @@
 
 (app-switcher:start)
 
-(local confirm-quit-apps (tableset (mapval (partial . apps) ["Safari" "Doppler" "Finder"])))
+(local confirm-quit-apps (tableset (mapval (partial . apps) ["Safari" "Safari Technology Preview" "Doppler" "Finder"])))
 
 (var prior-quit-app-pid nil)
 (var prior-quit-timestamp nil)
@@ -329,7 +335,7 @@
 (fn app? [app name]
   (= (app:bundleID) (. apps name)))
 
-;; Turns off the keyboard brightness when switching to IINA.
+;; Turn off the keyboard brightness when switching to IINA.
 (global iina-watcher
   (hs.application.watcher.new
     (fn [name type app]
@@ -382,9 +388,9 @@
                      "key" key-down
                      "flags" (tableset ["cmd"])}
                     ;; "Pause Selected"
-                    ;; {"name" "Transmission"
-                    ;;  "key" "."
-                    ;;  "flags" (tableset ["cmd"])}
+                    {"name" "Transmission"
+                     "key" "."
+                     "flags" (tableset ["cmd"])}
                     ;; "Pause All"
                     {"name" "Transmission"
                      "key" "."

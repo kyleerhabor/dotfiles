@@ -1,3 +1,5 @@
+export PATH="/opt/anaconda3/bin:$PATH"
+
 ## Pyenv
 
 export PYENV_ROOT=$HOME/.pyenv

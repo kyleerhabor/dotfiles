@@ -7,6 +7,8 @@ autoload -Uz compinit
 
 ## Options
 
+setopt autocd
+
 # Enable command spellchecking.
 setopt correct
 

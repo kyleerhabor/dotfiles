@@ -1,5 +1,5 @@
 (local {: colorscheme
-        : colorschemes} (require "config.core"))
+        : colorschemes} (require "config.colorscheme"))
 (local {: prefix} (require "config.util"))
 (local {: setup} (require "lualine"))
 

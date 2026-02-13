@@ -1,31 +1,40 @@
-(local {: highlight} (require "config.core"))
+(local {: highlight-duration} (require "config.core"))
 (local n (require "nfnl.core"))
+(local str (require "nfnl.string"))
 
-(fn group [name]
-  (vim.api.nvim_create_augroup name {}))
+(fn group [name opts]
+  (let [opts (or opts {})]
+    (vim.api.nvim_create_augroup name opts)))
 
 (fn command [name group options]
   (vim.api.nvim_create_autocmd name
     (n.merge {"group" group}
       options)))
 
-(command "TextYankPost" (group "HighlightYank")
-  {"callback" #(vim.highlight.on_yank {"timeout" highlight})})
+(local me (group "Me"))
+(local comments {"fennel" ";; %s"})
 
-;; (command "ModeChanged" (group "ListMode")
-;;   {"callback" (fn [autocmd]
-;;                 )})
+(command "FileType" me
+  {"pattern" (n.keys comments)
+   "callback" (fn [{:match filetype}]
+                (set vim.opt_local.commentstring (. comments filetype)))})
 
-(command "LspAttach" (group "Lsp")
+(command "TextYankPost" me
+  {"callback" #(vim.highlight.on_yank {"timeout" highlight-duration})})
+
+(command "LspAttach" me
   {"callback" #(vim.keymap.set "n" "<LocalLeader>pr" vim.lsp.buf.rename {"buffer" $.buf})})
 
-;; (vim.api.nvim_create_autocmd "ModeChanged"
-;;   {"group" (group "ListMode")
-;;    "callback" (fn [aucmd]
-;;                 (let [mode (n.second (str.split aucmd.match ":"))]
-;;                   (set opt.list (and
-;;                                   (= "n" mode)
-;;                                   ;; In buffers that aren't modifiable (vimdoc/help, dependencies, etc.) it's annoying
-;;                                   ;; for list to be enabled on e.g. navigation (especially when tabs are used, since you
-;;                                   ;; get ^I, which righyfully looks ugly).
-;;                                   (opt.modifiable:get)))))})
+(command "ModeChanged" me
+  {"callback" (fn [{:match modes}]
+                (let [mode (n.second (str.split modes ":"))]
+                  (set vim.opt.list (and
+                                      (= "n" mode)
+                                      ;; In buffers that aren't modifiable (vimdoc/help, dependencies, etc.) it's annoying
+                                      ;; for list to be enabled on e.g. navigation (especially when tabs are used, since
+                                      ;; it renders as ^I, which is ugly).
+                                      (vim.opt.modifiable:get)
+                                      (not= "checkhealth" (vim.opt.filetype:get))))))})
+
+{: command
+ : group}

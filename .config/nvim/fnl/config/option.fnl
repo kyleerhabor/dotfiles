@@ -1,5 +1,4 @@
-(local {: highlight} (require "config.core"))
-(local {: term-apple} (require "config.util"))
+(local {: terms} (require "config.util"))
 
 ;; Don't show command sequences (bottom trailing edge)
 ;;
@@ -15,19 +14,15 @@
 ;; Perform case-insensitive searching.
 (set vim.opt.ignorecase true)
 
+;; Continue comments on new lines
 (vim.opt.formatoptions:append "r")
-(vim.opt.formatoptions:append "b")
+(vim.opt.formatoptions:append "b") ; ?
 
 ;; Evaluate trusted local files.
 (set vim.opt.exrc true)
 
 ;; Split windows in the trailing direction.
 (set vim.opt.splitright true)
-
-;;; Extra
-
-(set vim.g.conjure#highlight#enabled true)
-(set vim.g.conjure#highlight#timeout highlight)
 
 ;;; Needs update
 
@@ -53,9 +48,4 @@
 
 ;;; Colorscheme
 
-(set vim.opt.termguicolors (not= term-apple vim.env.TERM_PROGRAM))
-
-(set vim.g.gruvbox_material_ui_contrast "low")
-
-(when (not vim.g.neovide)
-  (set vim.g.gruvbox_material_transparent_background 2))
+(set vim.opt.termguicolors (not= vim.env.TERM_PROGRAM terms.apple))
