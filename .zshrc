@@ -4,6 +4,7 @@ export ZSH=$HOME/.shell
 
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/ffmpeg-full/bin:$PATH"
+export PATH="/usr/local/opt/macos-trash/bin:$PATH"
 
 # Created by `pipx` on 2024-08-06 06:30:54
 export PATH="$PATH:/Users/kyleerhabor/.local/bin"

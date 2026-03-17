@@ -1,5 +1,6 @@
 use std/dirs
 
+$env.EDITOR = 'nvim'
 $env.config.buffer_editor = 'nvim'
 $env.config.show_banner = false
 $env.PROMPT_COMMAND_RIGHT = {||
@@ -12,8 +13,18 @@ $env.PROMPT_COMMAND_RIGHT = {||
   $last_exit_code
 }
 
+const NU_PLUGIN_DIRS = [
+  ($nu.current-exe | path dirname)
+  ...$NU_PLUGIN_DIRS
+]
+
 # Homebrew
-$env.PATH = $env.PATH | prepend "/usr/local/bin"
+$env.PATH = $env.PATH | prepend "/usr/local/bin" | prepend "/usr/local/opt/macos-trash/bin"
+
+# Nix
+#
+# I'm a bit concerned about hardcoding this path.
+$env.PATH = $env.PATH | prepend "/run/current-system/sw/bin"
 
 # ...
 

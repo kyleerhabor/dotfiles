@@ -388,9 +388,9 @@
                      "key" key-down
                      "flags" (tableset ["cmd"])}
                     ;; "Pause Selected"
-                    {"name" "Transmission"
-                     "key" "."
-                     "flags" (tableset ["cmd"])}
+                    ;; {"name" "Transmission"
+                    ;;  "key" "."
+                    ;;  "flags" (tableset ["cmd"])}
                     ;; "Pause All"
                     {"name" "Transmission"
                      "key" "."
