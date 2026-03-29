@@ -1,3 +1,5 @@
+# TODO: Figure out how to set -e without immediately exiting.
+
 # For a source file and destination directory, create a symbolic link in the destination with the source's filename.
 link2 () {
   local dst="$1"
@@ -17,10 +19,9 @@ package2 () {
     local folder="$dst/$name"
     local dest="$dst/$name/$name.zip"
 
-    mkdir "$folder"
+    # Use -p to silence file exists error.
+    mkdir -p "$folder"
     pushd "$src"
-
-    # Funnily enough, -0 has generated smaller filesizes than -9 for me, at times.
     zip -r -0 -FS "$dest" .
     popd
   done
