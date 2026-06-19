@@ -6,5 +6,6 @@
   programs.git.settings.user.name = "Kyle Erhabor";
   programs.git.settings.user.email = "kyleerhabor@gmail.com";
 
+  # Enable Nushell integration.
   programs.nushell.enable = true;
 }

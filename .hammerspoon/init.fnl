@@ -204,6 +204,7 @@
              "MarkEdit" "app.cyan.markedit"
              "Messages" "com.apple.MobileSMS"
              "Meta" "com.nightbirdsevolve.Meta"
+             "Mimestream" "com.mimestream.Mimestream"
              "MusicBrainz Picard" "org.musicbrainz.Picard"
              "Neovide" "com.neovide.neovide"
              "Notes" "com.apple.Notes"
@@ -243,7 +244,7 @@
                  "i" ["IINA" "Bike"]
                  "k" ["Keychain Access"]
                  "l" ["Latest"]
-                 "m" ["Meta" "MusicBrainz Picard" "Mail" "MarkEdit" "Maps" "Messages"]
+                 "m" ["Meta" "MusicBrainz Picard" "Mail" "MarkEdit" "Maps" "Messages" "Mimestream"]
                  "n" ["Neovide" "Notes"]
                  "o" ["Obsidian" "Orion" "Orion RC" "Books"]
                  "p" ["Pages" "Preview" "Pixelmator Pro" "Photos"]

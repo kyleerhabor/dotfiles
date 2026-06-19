@@ -30,7 +30,7 @@ $env.PATH = $env.PATH | prepend "/run/current-system/sw/bin"
 
 let downloads = $'($env.HOME)/Downloads'
 alias cdd = cd ($downloads)
-alias cdv = cd $'($downloads)/[@] Videos'
+alias cdv = cd $'($downloads)/Videos'
 alias open = ^open
 
 # The git configuration to use for managing dotfiles in version control. Information about the repository itself (for
@@ -86,6 +86,7 @@ def --wrapped mangadex [url: string ...rest: string] {
   (
     mangadex-dl $url
       --path $'($mangadex_folder)/{manga.title} [MangaDex]'
+      # Girls' Last Tour - c1 (v1) [MangaDex (`Nekyou)]
       --filename-chapter '{manga.title} - c{chapter.chapter} (v{chapter.volume}) [MangaDex ({chapter.groups_name})]{file_ext}'
       --no-oneshot-chapter
       --save-as 'cbz'
@@ -97,7 +98,7 @@ def --wrapped mangadex [url: string ...rest: string] {
 
 # pyenv
 #
-# Note that the Python version should be before 3.14 so mangadex-downloader can build optional dependencies.
+# Note that the Python version should be <3.14 so mangadex-downloader can build optional dependencies.
 $env.PYENV_ROOT = "~/.pyenv" | path expand
 if (( $"($env.PYENV_ROOT)/bin" | path type ) == "dir") {
   $env.PATH = $env.PATH | prepend $"($env.PYENV_ROOT)/bin" }

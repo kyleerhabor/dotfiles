@@ -13,7 +13,7 @@
   home-manager.useUserPackages = true;
   home-manager.users.kyleerhabor = { ... }: {
     # Backwards compatibility for Home Manager.
-    home.stateVersion = "26.05";
+    home.stateVersion = "25.11";
     imports = [../home/kyleerhabor.nix];
   };
 }

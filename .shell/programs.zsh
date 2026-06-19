@@ -19,6 +19,12 @@ package2 () {
     local folder="$dst/$name"
     local dest="$dst/$name/$name.zip"
 
+    if [ ! -e "$src" ]; then
+      echo "$src not found"
+
+      continue
+    fi
+
     # Use -p to silence file exists error.
     mkdir -p "$folder"
     pushd "$src"
