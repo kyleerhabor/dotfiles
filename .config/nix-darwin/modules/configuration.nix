@@ -1,63 +1,67 @@
 { pkgs, inputs, ... }: let
   organizationID = "com.kyleerhabor";
   homeDirectory = "/Users/kyleerhabor";
-  configurationDirectory = "${homeDirectory}/.config/nix-darwin";
-  activationScriptFile = "${configurationDirectory}/modules/configuration/resources/activate.sh";
+  # configurationDirectory = "${homeDirectory}/.config/nix-darwin";
+  # activationScriptFile = "${configurationDirectory}/modules/configuration/resources/activate.sh";
 
   # Paths
-  nginxConfigurationFile = "${configurationDirectory}/modules/configuration/resources/nginx/nginx.conf";
-  nginxConfigurationDestinationTargetFile = "nginx/nginx.conf";
-  nginxConfigurationDestinationFile = "/etc/${nginxConfigurationDestinationTargetFile}";
-  nginxConfigurationMimeTypesDestinationTargetFile = "nginx/mime.types";
-  nginxConfigurationSCGIParametersDestinationTargetFile = "nginx/scgi_params";
-  nginxConfigurationFastCGIParametersDestinationTargetFile = "nginx/fastcgi_params";
-  nginxConfigurationRuTorrentDestinationTargetDirectory = "nginx/rutorrent";
-  nginxLogDirectory = "/var/log/nginx";
-  rtorrentLogDirectory = "/var/log/rtorrent";
-  rtorrentPrivateLogDirectory = "/var/log/rtorrent-private";
-  rtorrentConfigurationMainDestinationTargetFile = "rtorrent/main.rc";
-  rtorrentConfigurationMainDestinationFile = "/etc/${rtorrentConfigurationMainDestinationTargetFile}";
-  rtorrentConfigurationRtorrentTemplateDestinationTargetFile = "rtorrent/configurations/rtorrent/template.rc";
-  rtorrentConfigurationRtorrentTemplateDestinationFile = "/etc/${rtorrentConfigurationRtorrentTemplateDestinationTargetFile}";
-  rtorrentConfigurationRtorrentMainDestinationTargetFile = "rtorrent/configurations/rtorrent/main.rc";
-  rtorrentConfigurationRtorrentMainDestinationFile = "/etc/${rtorrentConfigurationRtorrentMainDestinationTargetFile}";
-  rtorrentConfigurationRtorrentPrivateTemplateDestinationTargetFile = "rtorrent/configurations/rtorrent-private/template.rc";
-  rtorrentConfigurationRtorrentPrivateTemplateDestinationFile = "/etc/${rtorrentConfigurationRtorrentPrivateTemplateDestinationTargetFile}";
-  rtorrentConfigurationRtorrentPrivateMainDestinationTargetFile = "rtorrent/configurations/rtorrent-private/main.rc";
-  rtorrentConfigurationRtorrentPrivateMainDestinationFile = "/etc/${rtorrentConfigurationRtorrentPrivateMainDestinationTargetFile}";
-  phpFPMLogDirectory = "/var/log/php-fpm";
-  phpFPMConfigurationFile = "${configurationDirectory}/modules/configuration/resources/php-fpm/php-fpm.conf";
-  phpFPMConfigurationDestinationTargetFile = "php-fpm/php-fpm.conf";
-  phpFPMConfigurationDestinationFile = "/etc/${phpFPMConfigurationDestinationTargetFile}";
+  logDirectory = "${homeDirectory}/Library/Logs";
+  navidromeConfigurationFile = pkgs.writeText "navidrome-config.toml" (builtins.readFile ./configuration/resources/navidrome/navidrome.toml);
+  # nginxConfigurationFile = "${configurationDirectory}/modules/configuration/resources/nginx/nginx.conf";
+  # nginxConfigurationDestinationTargetFile = "nginx/nginx.conf";
+  # nginxConfigurationDestinationFile = "/etc/${nginxConfigurationDestinationTargetFile}";
+  # nginxConfigurationMimeTypesDestinationTargetFile = "nginx/mime.types";
+  # nginxConfigurationSCGIParametersDestinationTargetFile = "nginx/scgi_params";
+  # nginxConfigurationFastCGIParametersDestinationTargetFile = "nginx/fastcgi_params";
+  # nginxConfigurationRuTorrentDestinationTargetDirectory = "nginx/rutorrent";
+  # nginxLogDirectory = "/var/log/nginx";
+  # rtorrentLogDirectory = "/var/log/rtorrent";
+  # rtorrentPrivateLogDirectory = "/var/log/rtorrent-private";
+  # rtorrentConfigurationMainDestinationTargetFile = "rtorrent/main.rc";
+  # rtorrentConfigurationMainDestinationFile = "/etc/${rtorrentConfigurationMainDestinationTargetFile}";
+  # rtorrentConfigurationRtorrentTemplateDestinationTargetFile = "rtorrent/configurations/rtorrent/template.rc";
+  # rtorrentConfigurationRtorrentTemplateDestinationFile = "/etc/${rtorrentConfigurationRtorrentTemplateDestinationTargetFile}";
+  # rtorrentConfigurationRtorrentMainDestinationTargetFile = "rtorrent/configurations/rtorrent/main.rc";
+  # rtorrentConfigurationRtorrentMainDestinationFile = "/etc/${rtorrentConfigurationRtorrentMainDestinationTargetFile}";
+  # rtorrentConfigurationRtorrentPrivateTemplateDestinationTargetFile = "rtorrent/configurations/rtorrent-private/template.rc";
+  # rtorrentConfigurationRtorrentPrivateTemplateDestinationFile = "/etc/${rtorrentConfigurationRtorrentPrivateTemplateDestinationTargetFile}";
+  # rtorrentConfigurationRtorrentPrivateMainDestinationTargetFile = "rtorrent/configurations/rtorrent-private/main.rc";
+  # rtorrentConfigurationRtorrentPrivateMainDestinationFile = "/etc/${rtorrentConfigurationRtorrentPrivateMainDestinationTargetFile}";
+  # phpFPMLogDirectory = "/var/log/php-fpm";
+  # phpFPMConfigurationFile = "${configurationDirectory}/modules/configuration/resources/php-fpm/php-fpm.conf";
+  # phpFPMConfigurationDestinationTargetFile = "php-fpm/php-fpm.conf";
+  # phpFPMConfigurationDestinationFile = "/etc/${phpFPMConfigurationDestinationTargetFile}";
 
   # Groups
-  nginxGroupName = "nginx";
-  nginxGroupID = 600;
+  # nginxGroupName = "nginx";
+  # nginxGroupID = 600;
 
   # Users
-  nginxUserName = "nginx";
-  nginxUserID = 600;
-  nginxUserHomeDirectory = "/var/empty";
-  rtorrentUserName = "rtorrent";
-  rtorrentUserID = 601;
-  rtorrentUserHomeDirectory = "/var/rtorrent";
-  phpFPMUserName = "phpfpm";
-  phpFPMUserID = 602;
-  phpFPMUserHomeDirectory = "/var/empty";
+  # nginxUserName = "nginx";
+  # nginxUserID = 600;
+  # nginxUserHomeDirectory = "/var/empty";
+  # rtorrentUserName = "rtorrent";
+  # rtorrentUserID = 601;
+  # rtorrentUserHomeDirectory = "/var/rtorrent";
+  # phpFPMUserName = "phpfpm";
+  # phpFPMUserID = 602;
+  # phpFPMUserHomeDirectory = "/var/empty";
 
   # Daemons
-  nginxDaemonID = "${organizationID}.nginx";
-  nginxDaemonStandardOutputFile = "${nginxLogDirectory}/access.log";
-  nginxDaemonStandardErrorFile = "${nginxLogDirectory}/error.log";
-  rtorrentDaemonID = "${organizationID}.rtorrent";
-  rtorrentDaemonStandardOutputFile = "${rtorrentLogDirectory}/access.log";
-  rtorrentDaemonStandardErrorFile = "${rtorrentLogDirectory}/error.log";
-  rtorrentPrivateDaemonID = "${organizationID}.rtorrent-private";
-  rtorrentPrivateDaemonStandardOutputFile = "${rtorrentPrivateLogDirectory}/access.log";
-  rtorrentPrivateDaemonStandardErrorFile = "${rtorrentPrivateLogDirectory}/error.log";
-  phpFPMDaemonID = "${organizationID}.php-fpm";
-  phpFPMDaemonStandardOutputFilePath = "${phpFPMLogDirectory}/access.log";
-  phpFPMDaemonStandardErrorFilePath = "${phpFPMLogDirectory}/error.log";
+  navidromeDaemonID = "${organizationID}.navidrome";
+  navidromeDaemonStandardFile = "${logDirectory}/${navidromeDaemonID}.access.log";
+  # nginxDaemonID = "${organizationID}.nginx";
+  # nginxDaemonStandardOutputFile = "${nginxLogDirectory}/access.log";
+  # nginxDaemonStandardErrorFile = "${nginxLogDirectory}/error.log";
+  # rtorrentDaemonID = "${organizationID}.rtorrent";
+  # rtorrentDaemonStandardOutputFile = "${rtorrentLogDirectory}/access.log";
+  # rtorrentDaemonStandardErrorFile = "${rtorrentLogDirectory}/error.log";
+  # rtorrentPrivateDaemonID = "${organizationID}.rtorrent-private";
+  # rtorrentPrivateDaemonStandardOutputFile = "${rtorrentPrivateLogDirectory}/access.log";
+  # rtorrentPrivateDaemonStandardErrorFile = "${rtorrentPrivateLogDirectory}/error.log";
+  # phpFPMDaemonID = "${organizationID}.php-fpm";
+  # phpFPMDaemonStandardOutputFilePath = "${phpFPMLogDirectory}/access.log";
+  # phpFPMDaemonStandardErrorFilePath = "${phpFPMLogDirectory}/error.log";
 in {
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowBroken = true;
@@ -90,6 +94,20 @@ in {
     vscode
     # xmlrpc_c
   ];
+  
+  # Navidrome
+  launchd.user.agents.navidrome.serviceConfig.Label = navidromeDaemonID;
+  launchd.user.agents.navidrome.serviceConfig.ProgramArguments = [
+    "${pkgs.navidrome}/bin/navidrome"
+    "--configfile"
+    "${navidromeConfigurationFile}"
+  ];
+
+  launchd.user.agents.navidrome.serviceConfig.RunAtLoad = true;
+  launchd.user.agents.navidrome.serviceConfig.KeepAlive = true;
+  launchd.user.agents.navidrome.serviceConfig.WorkingDirectory = homeDirectory;
+  launchd.user.agents.navidrome.serviceConfig.StandardOutPath = navidromeDaemonStandardFile;
+  launchd.user.agents.navidrome.serviceConfig.StandardErrorPath = navidromeDaemonStandardFile;
 
   # environment.etc.nginx.source = nginxConfigurationFile;
   # environment.etc.nginx.target = nginxConfigurationDestinationTargetFile;

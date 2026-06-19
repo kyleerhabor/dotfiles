@@ -18,7 +18,6 @@
     darwinConfigurations."Kyles-MacBook-Pro" = nix-darwin.lib.darwinSystem {
       modules = [
         ./modules/configuration.nix
-        ./modules/intel.nix
         home-manager.darwinModules.home-manager
         ./hosts/kyles-macbook-pro.nix
       ];

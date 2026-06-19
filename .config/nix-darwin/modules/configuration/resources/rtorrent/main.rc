@@ -1,0 +1,38 @@
+# When set to true, rTorrent starts in the background without any curses UI. It can then only be controlled via XMLRPC
+# commands and POSIX signals.
+system.daemon.set = true
+
+# Binding (https://github.com/rakshasa/rtorrent/wiki/Common-Tasks-in-rTorrent#setting-bind-address)
+#
+# Use ifconfig to discover the interface.
+
+# Set an interface with IPv4 address to bind to: [eth0|tun0]
+method.insert = cfg.interface.bind, string|const|private, (cat,"utun4")
+# Get IPv4 address of a given interface
+method.insert = get_interface_ipv4_address, simple|private, \
+    "execute.capture=bash,-c,\"$cat=\\\"echo -n \$(ip -o -4 addr show \\\",$argument.0=,\\\" | grep -Po 'inet \\\\\\\\\\K[\\\\\\\\\\d.]+')\\\"\""
+# The IP address the listening socket and outgoing connections is bound to. (bind)
+schedule2 = set_bind_address, 0, 0, \
+    "branch=((cfg.interface.bind)), \
+        ((network.bind_address.set,(get_interface_ipv4_address,(cfg.interface.bind))))"
+
+# DHT & PEX (https://github.com/rakshasa/rtorrent/wiki/Common-Tasks-in-rTorrent#supporting-public-torrents-magnet-links-udp-trackers-dht)
+
+# Controls whether peer exchange is enabled.
+protocol.pex.set = true
+
+# Controls when (if at all) DHT is activated. Regardless of what this is set to, DHT will never be used for torrents
+# with the “private” flag enabled (see d.is_private).
+dht.mode.set = auto
+
+# Controls which port DHT will listen on.
+dht.port.set = 6881
+
+# Set whether the client should try to connect to UDP trackers (It can cause various problems if it's enabled, if you
+# experience any with this option enabled then disable it.)
+trackers.use_udp.set = true
+
+# Adding public DHT servers for easy bootstrapping
+schedule2 = dht_node_1, 5, 0, "dht.add_node=dht.transmissionbt.com:6881"
+schedule2 = dht_node_2, 5, 0, "dht.add_node=router.bitcomet.com:6881"
+schedule2 = dht_node_3, 5, 0, "dht.add_node=dht.aelitis.com:6881"
