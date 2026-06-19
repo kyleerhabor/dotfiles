@@ -1,6 +1,0 @@
-method.insert = cfg.scgi_socket, private|const|string, "/var/run/rtorrent/rpc.socket"
-network.scgi.open_local = (cfg.scgi_socket)
-schedule2 = scgi_permission, 0, 0, (cat, "execute.nothrow=chmod,\"g+w,o=\",", (cfg.scgi_socket))
-
-# Set the umask for the running rTorrent process.
-system.umask.set = 0022
