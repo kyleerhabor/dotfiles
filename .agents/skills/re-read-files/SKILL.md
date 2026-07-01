@@ -1,14 +1,18 @@
 ---
 name: re-read-files
-description: Before making claims about a file, re-read it along with its callers, callees, and data flow. Use when the user references a specific file whose role in a larger system matters.
+description: Before proposing a change, read current state and verify diffs apply cleanly.
 ---
 
 # Re-Read Files
 
-When the user discusses a file and you are about to make a claim or propose a change, don't read it in isolation. A file's meaning is shaped by what calls it, what it calls, what feeds its inputs, and what it produces.
+Before proposing any code change:
 
-**Callers and callees.** If the file is sourced, imported, included, or executed by other files, those define its contract. A change that works when read alone can break expectations set by callers with different conventions.
+1. **Read the target.** Read the file(s) being modified on disk. Files change between turns — do not rely on memory.
 
-**Inputs and outputs.** Where do variables, arguments, and environment values come from? Where do results go? A file may be fed by multiple callers that set the same variable with different semantics.
+2. **Read the callers and callees.** If the file imports from or is imported by other project files, read them too. A rename or restructure in a dependency breaks the target.
 
-**Current state.** Files change between reads. Build outputs decay. Always check what's on disk now, not what you remember from earlier.
+3. **Read back after composing.** After drafting the diff, re-read the target file one more time. Confirm:
+   - Line numbers and context match the current file.
+   - No duplicate blocks or stale references.
+
+4. **Show evidence.** When presenting a diff, include the relevant snippet of the file as-read so the reader can verify without opening the file.
